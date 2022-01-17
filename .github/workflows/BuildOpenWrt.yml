@@ -21,6 +21,7 @@ env:
   OpenWrt_URL: https://github.com/coolsnowwolf/lede
   OpenWrt_BRANCH: master
   TIME_ZONE: Asia/Shanghai
+  Keep_Packages: true
   UPLOAD_BinDIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: false
@@ -68,7 +69,7 @@ jobs:
     
     - name: 更新并安装Feeds
       run: |
-        cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
+        cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a && ./scripts/feeds update -a && ./scripts/feeds install -a
     
     - name: 加载固件配置
       run: |
@@ -121,16 +122,23 @@ jobs:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
     
+    - name: 处理Packages
+      id: delPackages
+      if: env.Keep_Packages == 'false'
+      run: |
+        cd openwrt/bin/targets/*/*
+        rm -rf packages
+    
     - name: 整理文件
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
-        rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-
-    - name: 上传到固件目录
+        
+       
+    - name: 上传固件
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
