@@ -46,11 +46,20 @@ jobs:
         sudo timedatectl set-timezone "$TIME_ZONE"
         sudo mkdir -p /BuildDir
         sudo chown $USER:$GROUPS /BuildDir
-        
+    
+    - name: 硬件信息
+      working-directory: /BuildDir
+      run: |
+         echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+         echo -e "UserName: $(whoami) \n"
+         echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB') \n"
+         echo -e "DiskInfo: \n"
+         df -hT $PWD
+         
+         
     - name: 拉取源代码
       working-directory: /BuildDir
       run: |
-        df -hT $PWD
         git clone $OpenWrt_URL -b $OpenWrt_BRANCH openwrt
         ln -sf /BuildDir/openwrt $GITHUB_WORKSPACE/openwrt
         
