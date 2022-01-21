@@ -1,0 +1,194 @@
+# This is a basic workflow to help you get started with Actions
+
+name: 小米路由4A千兆版
+
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+        
+env:
+  ROUTE_PATH: XIAOMI-4A_GIGABit
+  PATCH_SH: XIAOMI-4A_GIGABit/patch.sh
+  FEEDS_CONF: XIAOMI-4A_GIGABit/feeds.conf.default
+  FEEDS_SH: XIAOMI-4A_GIGABit/feeds.sh
+  CONFIG_FILE: XIAOMI-4A_GIGABit/.config
+  BEFORMAKE_SH: XIAOMI-4A_GIGABit/make_befor.sh
+  AFTERMAKE_SH: XIAOMI-4A_GIGABit/make_after.sh
+  
+  
+  OpenWrt_URL: https://github.com/coolsnowwolf/lede
+  OpenWrt_BRANCH: master
+  TIME_ZONE: Asia/Shanghai
+  Keep_Packages: true
+  UPLOAD_BinDIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_RELEASE: false
+  
+jobs: 
+  build: 
+    runs-on: ubuntu-20.04
+    steps:
+    - name: 初始化Actions
+      uses: actions/checkout@main
+      
+    - name: 初始化系统环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        #非交互式环境
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TIME_ZONE"
+        sudo mkdir -p /XIAOMI-4A_GIGABit
+        sudo chown $USER:$GROUPS /XIAOMI-4A_GIGABit
+    
+    - name: 硬件信息
+      working-directory: /XIAOMI-4A_GIGABit
+      run: |
+         echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+         echo -e "UserName: $(whoami) \n"
+         echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB') \n"
+         
+         
+         
+    - name: 拉取源代码
+      working-directory: /XIAOMI-4A_GIGABit
+      run: |
+        df -hT $PWD
+        git clone $OpenWrt_URL -b $OpenWrt_BRANCH openwrt
+        ln -sf /XIAOMI-4A_GIGABit/openwrt $GITHUB_WORKSPACE/openwrt
+        
+    - name: 执行修补脚本
+      run: |
+        chmod +x $PATCH_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$PATCH_SH
+        
+    - name: 加载自定义源
+      run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $FEEDS_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$FEEDS_SH
+    
+    - name: 更新并安装Feeds
+      run: |
+        cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a && ./scripts/feeds update -a && ./scripts/feeds install -a
+    
+    - name: 加载固件配置
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+    
+    - name: 执行编译前脚本
+      run: |
+        chmod +x $BEFORMAKE_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$BEFORMAKE_SH
+    
+    
+    - name: 下载编译所需
+      id: makedown
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+    
+    - name: 编译固件
+      id: make
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread cpu"
+        echo "Start Time: "$(date +"%Y/%m/%d %H:%M:%S")""
+        make -j$(nproc) || make -j1 || make -j1 V=s
+        echo "End Time: "$(date +"%Y/%m/%d %H:%M:%S")""
+        echo "::set-output name=status::success"
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+    
+    - name: 检查空间使用情况
+      if: (!cancelled())
+      run: df -hT
+      
+    - name: 执行编译后脚本
+      run: |
+        chmod +x $AFTERMAKE_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$AFTERMAKE_SH
+      
+    - name: 上传 bin 目录
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BinDIR == 'true'
+      with:
+        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/bin
+    
+    - name: 处理Packages
+      id: delPackages
+      if: env.Keep_Packages == 'false'
+      run: |
+        cd openwrt/bin/targets/*/*
+        rm -rf packages
+    
+    - name: 整理文件
+      id: organize
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      run: |
+        cd openwrt/bin/targets/*/*
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
+        
+       
+    - name: 上传固件
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
+        
+    - name: 生成release标签
+      id: tag
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: |
+        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
+        touch release.txt
+        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
+        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        echo "::set-output name=status::success"
+        
+    - name: 上传固件到release
+      uses: softprops/action-gh-release@v1
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ env.FIRMWARE }}/*
+
+    - name: 退出workflow
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
+
+    - name: 删除旧的 Releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
+        keep_latest: 3
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
