@@ -98,5 +98,40 @@ cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100mEditon.dtsi <<
 
 EOF
 
-sed -i 's/#include "mt7628an_xiaomi_mi-router-4.dtsi"/#include "mt7628an_xiaomi_mi-router-4a-100mEditon.dtsi"/g' ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dts
+rm -f ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dts
+
+cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dts << EOF
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+
+#include "mt7628an_xiaomi_mi-router-4a-100mEditon.dtsi"
+
+/ {
+	compatible = "xiaomi,mi-router-4a-100m", "mediatek,mt7628an-soc";
+	model = "Xiaomi Mi Router 4A (100M Edition)";
+};
+
+&pcie {
+	status = "okay";
+};
+
+&pcie0 {
+	wifi@0,0 {
+		compatible = "mediatek,mt76";
+		reg = <0x0000 0 0 0 0>;
+		mediatek,mtd-eeprom = <&factory 0x8000>;
+		ieee80211-freq-limit = <5000000 6000000>;
+	};
+};
+
+&ethernet {
+	mtd-mac-address = <&factory 0x4>;
+	mtd-mac-address-increment = <(-1)>;
+};
+
+&esw {
+	mediatek,portmap = <0x3e>;
+	mediatek,portdisable = <0x2a>;
+};
+EOF
+
 sed -i '/define Device\/xiaomi_mi-router-4a-100m/{:a;n;s/IMAGE_SIZE := 14976k/IMAGE_SIZE := 16064k/g;/TARGET_DEVICES += xiaomi_mi-router-4a-100m/!ba}' ./target/linux/ramips/image/mt76x8.mk
