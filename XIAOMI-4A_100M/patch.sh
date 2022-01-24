@@ -1,4 +1,4 @@
-cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dtsi << EOF
+cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100mEditon.dtsi << EOF
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 
 #include "mt7628an.dtsi"
@@ -46,12 +46,12 @@ cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dtsi << EOF
 &spi0 {
 	status = "okay";
 
-	flash@0 {
+	flash0: flash@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <10000000>;
 
-		partitions {
+		partitions: partitions {
 			compatible = "fixed-partitions";
 			#address-cells = <1>;
 			#size-cells = <1>;
@@ -75,10 +75,12 @@ cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dtsi << EOF
 			};
 
 			partition@50000 {
-				compatible = "denx,uimage";
 				label = "firmware";
 				reg = <0x50000 0xfb0000>;
+				read-only;
 			};
+
+			/* additional partitions in DTS */
 		};
 	};
 };
@@ -93,7 +95,8 @@ cat >> ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dtsi << EOF
 &wmac {
 	status = "okay";
 };
+
 EOF
 
-sed -i 's/#include "mt7628an_xiaomi_mi-router-4.dtsi"/#include "mt7628an_xiaomi_mi-router-4a-100m.dtsi"/g' ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dts
+sed -i 's/#include "mt7628an_xiaomi_mi-router-4.dtsi"/#include "mt7628an_xiaomi_mi-router-4a-100mEditon.dtsi"/g' ./target/linux/ramips/dts/mt7628an_xiaomi_mi-router-4a-100m.dts
 sed -i '/define Device\/xiaomi_mi-router-4a-100m/{:a;n;s/IMAGE_SIZE := 14976k/IMAGE_SIZE := 16064k/g;/TARGET_DEVICES += xiaomi_mi-router-4a-100m/!ba}' ./target/linux/ramips/image/mt76x8.mk
