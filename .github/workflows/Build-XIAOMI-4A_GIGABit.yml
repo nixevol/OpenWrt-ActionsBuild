@@ -21,7 +21,7 @@ env:
   AFTERMAKE_SH: XIAOMI-4A_GIGABit/make_after.sh
   
   
-  OpenWrt_URL: https://github.com/coolsnowwolf/lede
+  OpenWrt_URL: https://github.com/openwrt/openwrt
   OpenWrt_BRANCH: master
   TIME_ZONE: Asia/Shanghai
   Keep_Packages: true
