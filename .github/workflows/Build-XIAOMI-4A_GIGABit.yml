@@ -14,7 +14,7 @@ on:
 env:
   ROUTE_PATH: XIAOMI-4A_GIGABit
   PATCH_SH: XIAOMI-4A_GIGABit/patch.sh
-  FEEDS_CONF: XIAOMI-4A_GIGABit/feeds.conf.default
+  FEEDS_CONF: XIAOMI-4A_GIGABit/feeds.conf.default.none
   FEEDS_SH: XIAOMI-4A_GIGABit/feeds.sh
   CONFIG_FILE: XIAOMI-4A_GIGABit/.config
   BEFORMAKE_SH: XIAOMI-4A_GIGABit/make_befor.sh
