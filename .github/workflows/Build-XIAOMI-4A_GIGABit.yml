@@ -74,7 +74,7 @@ jobs:
         
     - name: 加载自定义源
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        
         chmod +x $FEEDS_SH
         cd openwrt
         $GITHUB_WORKSPACE/$FEEDS_SH
