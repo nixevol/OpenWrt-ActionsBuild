@@ -12,30 +12,24 @@ on:
       openwrt_branch:
         description: 'Openwrt 版本分支'
         default: 'v21.02.1'
-      openwrt_patch:
-        description: 'Openwrt 补丁路径'
-        default: 'XIAOMI-4A_100M/patch.sh'
-      files_path:
-        description: 'files补丁目录'
-        default: 'XIAOMI-4A_100M/files'
-      config_file:
-        description: 'config 文件路径'
-        default: 'XIAOMI-4A_100M/.config'
       feeds_file:
         description: 'feeds 文件路径'
         default: 'XIAOMI-4A_100M/feeds.conf.default'
-      feeds_path:
-        description: 'feeds 补丁路径'
-        default: 'XIAOMI-4A_100M/feeds.sh'
+      config_file:
+        description: 'config 文件路径'
+        default: 'XIAOMI-4A_100M/.config'
+      files_path:
+        description: 'files 补丁目录'
+        default: 'XIAOMI-4A_100M/files'
+      openwrt_patch:
+        description: 'openwrt 补丁路径'
+        default: 'XIAOMI-4A_100M/patch.sh'
       befor_file:
         description: '编译前脚本路径'
         default: 'XIAOMI-4A_100M/make_befor.sh'
       after_file:
         description: '编译后脚本路径'
         default: 'XIAOMI-4A_100M/make_after.sh'
-      keep_packages:
-        description: '打包packages目录'
-        default: 'true'
       upload_bindir:
         description: '上传bin目录'
         default: 'false'
@@ -45,10 +39,10 @@ on:
 env:
   OpenWrt_URL: ${{ github.event.inputs.openwrt_repourl }}
   OpenWrt_BRANCH: ${{ github.event.inputs.openwrt_branch }}
-  PATCH_SH: ${{ github.event.inputs.openwrt_patch }}
-  CONFIG_FILE: ${{ github.event.inputs.config_file }}
   FEEDS_CONF: ${{ github.event.inputs.feeds_file }}
-  FEEDS_SH: ${{ github.event.inputs.feeds_path }}
+  CONFIG_FILE: ${{ github.event.inputs.config_file }}
+  FILES_PATH: ${{ github.event.inputs.files_path }}
+  PATCH_SH: ${{ github.event.inputs.openwrt_patch }}
   BEFORMAKE_SH: ${{ github.event.inputs.befor_file }}
   AFTERMAKE_SH: ${{ github.event.inputs.after_file }}
   
@@ -56,7 +50,6 @@ env:
   TIME_ZONE: Asia/Shanghai
   UPLOAD_FIRMWARE: true
   
-  Keep_Packages: ${{ github.event.inputs.keep_packages }}
   UPLOAD_BinDIR: ${{ github.event.inputs.upload_bindir }}
   UPLOAD_RELEASE: ${{ github.event.inputs.upload_release }}
   
@@ -97,36 +90,40 @@ jobs:
         git clone $OpenWrt_URL -b $OpenWrt_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
-    - name: 执行修补脚本
+    - name: 替换自定义源
+      run: |
+        [ -e $FEEDS_CONF ] && echo "自定义源文件存在" || echo "自定义源文件不存在"
+        [ -e $FEEDS_CONF ] && mv rm -f openwrt/feeds.conf.default
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        
+    - name: 加载固件配置
+      run: |
+        [ -e $CONFIG_FILE ] && echo "固件配置文件存在" || echo "固件配置文件不存在"
+        [ -e $CONFIG_FILE ] && mv rm -f openwrt/.config
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+    
+    - name: 加载files目录
+      run: |
+        [ -e $FILES_PATH ] && echo "目录存在" || echo "目录不存在"
+        [ -e $FILES_PATH ] && mv $FILES_PATH openwrt/files
+        
+    - name: 执行OpenWRT补丁脚本
       run: |
         [ -e $PATCH_SH ] && echo "补丁文件存在" || echo "补丁文件不存在"
         [ -e $PATCH_SH ] && chmod +x $PATCH_SH
         [ -e $PATCH_SH ] && cd openwrt
         [ -e $PATCH_SH ] && $GITHUB_WORKSPACE/$PATCH_SH
-        
-    - name: 加载自定义源
-      run: |
-        [ -e $FEEDS_SH ] && echo "自定义源文件存在" || echo "自定义源文件不存在"
-        [ -e $FEEDS_SH ] && chmod +x $FEEDS_SH
-        [ -e $FEEDS_SH ] && cd openwrt
-        [ -e $FEEDS_SH ] && $GITHUB_WORKSPACE/$FEEDS_SH
     
     - name: 更新并安装Feeds
       run: |
         cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a && ./scripts/feeds update -a && ./scripts/feeds install -a
-    
-    - name: 加载固件配置
-      run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-    
+        
     - name: 执行编译前脚本
       run: |
         [ -e $BEFORMAKE_SH ] && echo "编译前脚本文件存在" || echo "编译前脚本文件不存在"
         [ -e BEFORMAKE_SH ] && chmod +x $BEFORMAKE_SH
         [ -e BEFORMAKE_SH ] && cd openwrt
         [ -e BEFORMAKE_SH ] && $GITHUB_WORKSPACE/$BEFORMAKE_SH
-    
     
     - name: 下载编译所需
       id: makedown
@@ -167,13 +164,6 @@ jobs:
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
-    
-    - name: 处理Packages
-      id: delPackages
-      if: env.Keep_Packages == 'false'
-      run: |
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
     
     - name: 整理文件
       id: organize
