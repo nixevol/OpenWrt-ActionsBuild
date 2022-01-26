@@ -53,7 +53,7 @@ env:
   AFTERMAKE_SH: ${{ github.event.inputs.after_file }}
   TEXT1: 'XIAOMI-4A_GIGABit'
   TEXT2: 'FUCK.sh'
-  TEXT3: '${{ TEXT1 }}/${{ TEXT2 }}'
+  TEXT3: '$TEXT1/$TEXT2'
   
   TIME_ZONE: Asia/Shanghai
   UPLOAD_FIRMWARE: true
