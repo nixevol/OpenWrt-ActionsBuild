@@ -22,7 +22,7 @@ env:
   
   
   OpenWrt_URL: https://github.com/openwrt/openwrt
-  OpenWrt_BRANCH: openwrt-21.02
+  OpenWrt_BRANCH: master
   TIME_ZONE: Asia/Shanghai
   Keep_Packages: true
   UPLOAD_BinDIR: false
