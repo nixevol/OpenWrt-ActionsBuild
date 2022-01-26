@@ -98,7 +98,7 @@ jobs:
         
     - name: 替换自定义源
       run: |
-        [ -e $FEEDS_CONF ] && echo "自定义源文件存在" && mv rm -f openwrt/feeds.conf.default && mv $FEEDS_CONF openwrt/feeds.conf.default
+        [ -e $FEEDS_CONF ] && echo "自定义源文件存在" && rm -f openwrt/feeds.conf.default && mv $FEEDS_CONF openwrt/feeds.conf.default
         
     - name: 加载固件配置
       run: |
