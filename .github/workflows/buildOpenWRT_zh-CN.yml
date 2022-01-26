@@ -31,11 +31,17 @@ on:
         description: '编译后脚本路径'
         default: 'XIAOMI-4A_100M/make_after.sh'
       upload_bindir:
+        type: choice
         description: '上传bin目录'
-        default: 'false'
+        options:
+        - false
+        - true
       upload_release:
+        type: choice
         description: '发布到release'
-        default: 'false'
+        options:
+        - false
+        - true
 env:
   OpenWrt_URL: ${{ github.event.inputs.openwrt_repourl }}
   OpenWrt_BRANCH: ${{ github.event.inputs.openwrt_branch }}
