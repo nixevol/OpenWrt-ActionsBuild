@@ -79,10 +79,10 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TIME_ZONE"
         sudo mkdir -p /workdir
-        sudo chown $USER:$GROUPS /XIAOMI-4A_100M
+        sudo chown $USER:$GROUPS /workdir
     
     - name: 硬件信息
-      working-directory: /XIAOMI-4A_100M
+      working-directory: /workdir
       run: |
          echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
          echo -e "UserName: $(whoami) \n"
