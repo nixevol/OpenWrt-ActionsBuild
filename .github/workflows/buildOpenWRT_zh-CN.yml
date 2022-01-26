@@ -6,42 +6,42 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-	  openwrt_repourl:
-	    description: 'Openwrt 仓库地址'
-		default: 'https://github.com/openwrt/openwrt'
+      openwrt_repourl:
+        description: 'Openwrt 仓库地址'
+        default: 'https://github.com/openwrt/openwrt'
       openwrt_branch:
-		description: 'Openwrt 版本分支'
-		default: 'v21.02.1'
-	  openwrt_patch:
-		description: 'Openwrt 补丁路径'
-		default: 'XIAOMI-4A_100M/patch.sh'
-	  files_path:
-		description: 'files补丁目录'
-		default: 'XIAOMI-4A_100M/files'
-	  config_file:
-		description: 'config 文件路径'
-		default: 'XIAOMI-4A_100M/.config'
-	  feeds_file:
-		description: 'feeds 文件路径'
-		default: 'XIAOMI-4A_100M/feeds.conf.default'
-	  feeds_path:
-		description: 'feeds 补丁路径'
-		default: 'XIAOMI-4A_100M/feeds.sh'
-	  befor_file:
-		description: '编译前脚本路径'
-		default: 'XIAOMI-4A_100M/make_befor.sh'
-	  after_file:
-		description: '编译后脚本路径'
-		default: 'XIAOMI-4A_100M/make_after.sh'
-	  keep_packages:
-		description: '打包packages目录'
-		default: true
-	  upload_bindir:
-		description: '上传bin目录'
-		default: false
-	  upload_release:
-		description: '发布到release'
-		default: false
+        description: 'Openwrt 版本分支'
+        default: 'v21.02.1'
+      openwrt_patch:
+        description: 'Openwrt 补丁路径'
+        default: 'XIAOMI-4A_100M/patch.sh'
+      files_path:
+        description: 'files补丁目录'
+        default: 'XIAOMI-4A_100M/files'
+      config_file:
+        description: 'config 文件路径'
+        default: 'XIAOMI-4A_100M/.config'
+      feeds_file:
+        description: 'feeds 文件路径'
+        default: 'XIAOMI-4A_100M/feeds.conf.default'
+      feeds_path:
+        description: 'feeds 补丁路径'
+        default: 'XIAOMI-4A_100M/feeds.sh'
+      befor_file:
+        description: '编译前脚本路径'
+        default: 'XIAOMI-4A_100M/make_befor.sh'
+      after_file:
+        description: '编译后脚本路径'
+        default: 'XIAOMI-4A_100M/make_after.sh'
+      keep_packages:
+        description: '打包packages目录'
+        default: true
+      upload_bindir:
+        description: '上传bin目录'
+        default: false
+      upload_release:
+        description: '发布到release'
+        default: false
 env:
   OpenWrt_URL: ${{ github.event.inputs.openwrt_repourl }}
   OpenWrt_BRANCH: ${{ github.event.inputs.openwrt_branch }}
