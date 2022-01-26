@@ -96,9 +96,6 @@ jobs:
         git clone $OpenWrt_URL -b $OpenWrt_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
-    - name: 替换自定义源
-      run: |
-        [ -e $FEEDS_CONF ] || echo "跳过"
         
     - name: 加载固件配置
       run: |
