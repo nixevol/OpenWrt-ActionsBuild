@@ -35,13 +35,13 @@ on:
         default: 'XIAOMI-4A_100M/make_after.sh'
       keep_packages:
         description: '打包packages目录'
-        default: true
+        default: 'true'
       upload_bindir:
         description: '上传bin目录'
-        default: false
+        default: 'false'
       upload_release:
         description: '发布到release'
-        default: false
+        default: 'false'
 env:
   OpenWrt_URL: ${{ github.event.inputs.openwrt_repourl }}
   OpenWrt_BRANCH: ${{ github.event.inputs.openwrt_branch }}
