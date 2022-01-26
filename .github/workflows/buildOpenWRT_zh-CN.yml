@@ -98,12 +98,11 @@ jobs:
         
     - name: 替换自定义源
       run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        [ -e $FEEDS_CONF ] || echo "跳过"
         
     - name: 加载固件配置
       run: |
         [ -e $CONFIG_FILE ] && echo "固件配置文件存在" || echo "固件配置文件不存在"
-        [ -e $CONFIG_FILE ] && mv rm -f openwrt/.config
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
     
     - name: 加载files目录
