@@ -14,22 +14,22 @@ on:
         default: 'v21.02.1'
       feeds_file:
         description: 'feeds 文件路径'
-        default: 'XIAOMI-4A_100M/feeds.conf.default'
+        default: 'XIAOMI-4A_GIGABit/feeds.conf.default'
       config_file:
         description: 'config 文件路径'
-        default: 'XIAOMI-4A_100M/.config'
+        default: 'XIAOMI-4A_GIGABit/.config'
       files_path:
         description: 'files 补丁目录'
-        default: 'XIAOMI-4A_100M/files'
+        default: 'XIAOMI-4A_GIGABit/files'
       openwrt_patch:
         description: 'openwrt 补丁路径'
-        default: 'XIAOMI-4A_100M/patch.sh'
+        default: 'XIAOMI-4A_GIGABit/patch.sh'
       befor_file:
         description: '编译前脚本路径'
-        default: 'XIAOMI-4A_100M/make_befor.sh'
+        default: 'XIAOMI-4A_GIGABit/make_befor.sh'
       after_file:
         description: '编译后脚本路径'
-        default: 'XIAOMI-4A_100M/make_after.sh'
+        default: 'XIAOMI-4A_GIGABit/make_after.sh'
       upload_bindir:
         type: choice
         description: '上传bin目录'
