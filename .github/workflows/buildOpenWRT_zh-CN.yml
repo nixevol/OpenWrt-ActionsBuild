@@ -65,7 +65,7 @@ jobs:
     
     steps:
     - name: 检出项目
-      uses: actions/checkout@main
+      uses: actions/checkout@XIAOMI-4A_GIGABit
       
     - name: 初始化环境
       env:
