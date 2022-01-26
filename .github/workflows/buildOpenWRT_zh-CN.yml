@@ -51,9 +51,7 @@ env:
   PATCH_SH: ${{ github.event.inputs.openwrt_patch }}
   BEFORMAKE_SH: ${{ github.event.inputs.befor_file }}
   AFTERMAKE_SH: ${{ github.event.inputs.after_file }}
-  TEXT1: 'XIAOMI-4A_GIGABit'
-  TEXT2: 'FUCK.sh'
-  TEXT3: '$TEXT1/$TEXT2'
+  
   
   TIME_ZONE: Asia/Shanghai
   UPLOAD_FIRMWARE: true
@@ -74,7 +72,6 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
         #非交互式环境
       run: |
-        echo "$TEXT3"
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
