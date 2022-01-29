@@ -125,8 +125,9 @@ jobs:
     
     
     - name: 替换软件源配置
-      if: env.REPLACE_FEEDS == 'true' && steps.organize.outputs.feeds == 'success'
+      if: steps.organize.outputs.feeds == 'success'
       run: |
+        echo $REPLACE_FEEDS
         cd openwrt
         rm -f feeds.conf.default
         mv $FEEDS_FILE feeds.conf.default
