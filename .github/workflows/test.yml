@@ -130,6 +130,7 @@ jobs:
       run: |
         echo $OPENWRT_PATCH
         ls
+        ls Resoure_DIR
         [ -e $OPENWRT_PATCH ] && chmod +x $OPENWRT_PATCH
         [ -e $OPENWRT_PATCH ] && cd openwrt
         [ -e $OPENWRT_PATCH ] && $GITHUB_WORKSPACE/$OPENWRT_PATCH
