@@ -69,14 +69,13 @@ env:
   FILES_PATH: '${{ github.event.inputs.resource_directory }}/files'
   RUN_OPENWRTPATCH: ${{ github.event.inputs.openwrt_patch }}
   OPENWRT_PATCH: '${{ github.event.inputs.resource_directory }}/openwrt_patch.sh'
-  RUN_OPENWRTPATCH: ${{ github.event.inputs.openwrt_patch }}
   RUN_BEFORPATCH: ${{ github.event.inputs.befor_patch }}
   BEFOR_PATCH: '${{ github.event.inputs.resource_directory }}/make_befor.sh'
   RUN_AFTERPATCH: ${{ github.event.inputs.after_patch }}
   AFTER_PATCH: '${{ github.event.inputs.resource_directory }}/make_after.sh'
   UPLOAD_RELEASE: ${{ github.event.inputs.upload_release }}
   
-  jobs:
+jobs:
   build:
     runs-on: ubuntu-20.04
 
