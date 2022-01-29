@@ -20,8 +20,8 @@ on:
         type: choice
         description: '替换软件源配置'
         options:
-        - true
-        - false
+        - "true"
+        - "false"
       config_file:
         description: 'config 文件名称'
         default: '.config'
@@ -29,32 +29,32 @@ on:
         type: choice
         description: '导入补丁目录'
         options:
-        - true
-        - false
+        - "true"
+        - "false"
       openwrt_patch:
         type: choice
         description: '执行仓库拉取后脚本'
         options:
-        - true
-        - false
+        - "true"
+        - "false"
       befor_patch:
         type: choice
         description: '执行编译前脚本'
         options:
-        - true
-        - false
+        - "true"
+        - "false"
       after_patch:
         type: choice
         description: '执行编译后脚本'
         options:
-        - true
-        - false
+        - "true"
+        - "false"
       upload_release:
         type: choice
         description: '发布到release'
         options:
-        - false
-        - true
+        - "false"
+        - "true"
 env:
   TIMEZONE: Asia/Shanghai
   Resoure_DIR: ${{ github.event.inputs.resource_directory }}
@@ -118,6 +118,10 @@ jobs:
         echo "::set-output name=openwrtpatch::success"
         echo "::set-output name=beforpatch::success"
         echo "::set-output name=afterpatch::success"
+        ls
+        ls openwrt
+        ls $Resoure_DIR
+        [ -e $FEEDS_FILE ] && echo "$FEEDS_FILE" || echo "no have $FEEDS_FILE"
     
     
     - name: 替换软件源配置
