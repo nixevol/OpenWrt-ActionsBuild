@@ -113,21 +113,21 @@ jobs:
         
     - name: 检测配置信息
       run: |
-        [ -e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
+        echo "$REPLACE_FEEDS"
+        [ -e $FEEDS_FILE ] && $REPLACE_FEEDS="false"
         [ -e $FEEDS_FILE ] && echo "::set-output name=files::success"
         [ -e $FEEDS_FILE ] && echo "::set-output name=openwrtpatch::success"
         [ -e $FEEDS_FILE ] && echo "::set-output name=beforpatch::success"
         [ -e $FEEDS_FILE ] && echo "::set-output name=afterpatch::success"
-        ls
-        ls openwrt
-        ls $Resoure_DIR
-        [ -e $FEEDS_FILE ] && echo "$FEEDS_FILE" || echo "no have $FEEDS_FILE"
+        
+    - name: 调试变量
+      run: |
+        echo "$REPLACE_FEEDS"
     
     
     - name: 替换软件源配置
+      if: env.REPLACE_FEEDS == 'true'
       run: |
-        echo "$REPLACE_FEEDS"
-        echo "${{ steps.organize.outputs.feeds }}"
         cd openwrt
         rm -f feeds.conf.default
         mv $FEEDS_FILE feeds.conf.default
