@@ -129,6 +129,7 @@ jobs:
       if: env.RUN_OPENWRTPATCH == 'true'
       run: |
         echo $OPENWRT_PATCH
+        ls
         [ -e $OPENWRT_PATCH ] && chmod +x $OPENWRT_PATCH
         [ -e $OPENWRT_PATCH ] && cd openwrt
         [ -e $OPENWRT_PATCH ] && $GITHUB_WORKSPACE/$OPENWRT_PATCH
