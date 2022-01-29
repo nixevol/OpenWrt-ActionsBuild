@@ -113,11 +113,11 @@ jobs:
         
     - name: 检测配置信息
       run: |
-        [-e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
-        [-e $LOAD_FILES ] && echo "::set-output name=files::success"
-        [-e $OPENWRT_PATCH ] && echo "::set-output name=openwrtpatch::success"
-        [-e $BEFOR_PATCH ] && echo "::set-output name=beforpatch::success"
-        [-e $AFTER_PATCH ] && echo "::set-output name=afterpatch::success"
+        [ -e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
+        [ -e $LOAD_FILES ] && echo "::set-output name=files::success"
+        [ -e $OPENWRT_PATCH ] && echo "::set-output name=openwrtpatch::success"
+        [ -e $BEFOR_PATCH ] && echo "::set-output name=beforpatch::success"
+        [ -e $AFTER_PATCH ] && echo "::set-output name=afterpatch::success"
     
     
     - name: 替换软件源配置
