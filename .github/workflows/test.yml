@@ -33,7 +33,7 @@ on:
         - "false"
       openwrt_patch:
         type: choice
-        description: '执行仓库拉取后脚本'
+        description: '执行仓库脚本'
         options:
         - "true"
         - "false"
@@ -97,7 +97,7 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
     
-    - name: 硬件信息
+    - name: 提取硬件信息
       working-directory: /workdir
       run: |
          echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
@@ -107,39 +107,106 @@ jobs:
     - name: 拉取OpenWRT仓库
       working-directory: /workdir
       run: |
-        df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
-    - name: 检测配置信息
-      run: |
-        echo "$REPLACE_FEEDS"
-        [ -e $FEEDS_FILE ] && $REPLACE_FEEDS="false"
-        [ -e $FEEDS_FILE ] && echo "::set-output name=files::success"
-        [ -e $FEEDS_FILE ] && echo "::set-output name=openwrtpatch::success"
-        [ -e $FEEDS_FILE ] && echo "::set-output name=beforpatch::success"
-        [ -e $FEEDS_FILE ] && echo "::set-output name=afterpatch::success"
-        
-    - name: 调试变量
-      run: |
-        echo "$REPLACE_FEEDS"
-    
-    
     - name: 替换软件源配置
       if: env.REPLACE_FEEDS == 'true'
       run: |
+        [ -e $FEEDS_FILE ] && rm -f openwrt/feeds.conf.default
+        [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.default
+    
+    - name: 加载固件配置
+      run: mv $CONFIG_FILE openwrt/.config
+      
+    - name: 导入补丁目录
+      if: env.LOAD_FILES == 'true'
+      run: |
+        [ -e $FILES_PATH ] && mv $FILES_PATH openwrt/files
+        [ -e openwrt/files ] && ls openwrt/files
+    
+    - name: 执行仓库脚本
+      if: env.RUN_OPENWRTPATCH == 'true'
+      run: |
+        [ -e $OPENWRT_PATCH ] && chmod +x $OPENWRT_PATCH
+        [ -e $OPENWRT_PATCH ] && cd openwrt
+        [ -e $OPENWRT_PATCH ] && $GITHUB_WORKSPACE/$OPENWRT_PATCH
+        
+    - name: 更新并安装软件源
+      run: |
+        cd openwrt 
+        ./scripts/feeds update -a && ./scripts/feeds install -a
+        ./scripts/feeds update -a && ./scripts/feeds install -a
+    
+    - name: 执行编译前脚本
+      if: env.RUN_BEFORPATCH == 'true'
+      run: |
+        [ -e BEFOR_PATCH ] && chmod +x $BEFOR_PATCH
+        [ -e BEFOR_PATCH ] && cd openwrt
+        [ -e BEFOR_PATCH ] && $GITHUB_WORKSPACE/$BEFOR_PATCH
+    
+    - name: 下载编译所需
+      id: makedownload
+      run: |
         cd openwrt
-        rm -f feeds.conf.default
-        mv $FEEDS_FILE feeds.conf.default
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
+        
+        
+    - name: 编译固件
+      id: make
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread cpu"
+        echo "Start Time: "$(date +"%Y/%m/%d %H:%M:%S")""
+        make -j$(nproc) || make -j1 || make -j1 V=s
+        echo "End Time: "$(date +"%Y/%m/%d %H:%M:%S")""
+        echo "::set-output name=status::success"
+        grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
     
+    - name: 执行编译后脚本
+      if: env.RUN_AFTERPATCH == 'true'
+      run: |
+        [ -e $AFTER_PATCH ] && chmod +x $AFTER_PATCH
+        [ -e $AFTER_PATCH ] && cd openwrt
+        [ -e $AFTER_PATCH ] && $GITHUB_WORKSPACE/$AFTER_PATCH
     
-    
+    - name: 上传固件
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
     
     - name: 清理ActionsRuns旧数据
       uses: GitRML/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 5
+        
+    - name: 生成release标签
+      id: tag
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: |
+        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
+        touch release.txt
+        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
+        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        echo "::set-output name=status::success"
+        
+    - name: 上传固件到Release
+      uses: softprops/action-gh-release@v1
+      if: env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ env.FIRMWARE }}/*
         
     - name: 清理Releases旧数据
       uses: dev-drprasad/delete-older-releases@v0.1.0
