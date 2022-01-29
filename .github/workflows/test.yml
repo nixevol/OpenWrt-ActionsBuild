@@ -1,0 +1,147 @@
+name: 测试
+
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      resource_directory:
+        type: choice
+        description: '路由器资源目录'
+        options:
+        - "XIAOMI_4A-GIGABit"
+        - "XIAOMI_4A-100M"
+      repo_url:
+        description: '仓库地址'
+        default: 'https://github.com/openwrt/openwrt'
+      repo_branch:
+        description: '版本分支'
+        default: 'v21.02.1'
+      feeds_file:
+        type: choice
+        description: '替换软件源配置'
+        options:
+        - true
+        - false
+      config_file:
+        description: 'config 文件名称'
+        default: '.config'
+      files_path:
+        type: choice
+        description: '导入补丁目录'
+        options:
+        - true
+        - false
+      openwrt_patch:
+        type: choice
+        description: '执行仓库拉取后脚本'
+        options:
+        - true
+        - false
+      befor_patch:
+        type: choice
+        description: '执行编译前脚本'
+        options:
+        - true
+        - false
+      after_patch:
+        type: choice
+        description: '执行编译后脚本'
+        options:
+        - true
+        - false
+      upload_release:
+        type: choice
+        description: '发布到release'
+        options:
+        - false
+        - true
+env:
+  TIMEZONE: Asia/Shanghai
+  Resoure_DIR: ${{ github.event.inputs.resource_directory }}
+  
+  REPO_URL: ${{ github.event.inputs.repo_url }}
+  
+  REPO_BRANCH: ${{ github.event.inputs.repo_branch }}
+  CONFIG_FILE: '${{ github.event.inputs.resource_directory }}/${{ github.event.inputs.config_file }}'
+  FEEDS_FILE: '${{ github.event.inputs.resource_directory }}/feeds.config.default'
+  REPLACE_FEEDS: ${{ github.event.inputs.feeds_file }}
+  LOAD_FILES: ${{ github.event.inputs.files_path }}
+  FILES_PATH: '${{ github.event.inputs.resource_directory }}/files'
+  RUN_OPENWRTPATCH: ${{ github.event.inputs.openwrt_patch }}
+  OPENWRT_PATCH: '${{ github.event.inputs.resource_directory }}/openwrt_patch.sh'
+  RUN_OPENWRTPATCH: ${{ github.event.inputs.openwrt_patch }}
+  RUN_BEFORPATCH: ${{ github.event.inputs.befor_patch }}
+  BEFOR_PATCH: '${{ github.event.inputs.resource_directory }}/make_befor.sh'
+  RUN_AFTERPATCH: ${{ github.event.inputs.after_patch }}
+  AFTER_PATCH: '${{ github.event.inputs.resource_directory }}/make_after.sh'
+  UPLOAD_RELEASE: ${{ github.event.inputs.upload_release }}
+  
+  jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: 检出仓库数据
+      uses: actions/checkout@main
+
+    - name: 初始化编译环境
+      env:
+        DEBIAN_FRONTEND: noninteractive
+        #非交互式环境
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TIMEZONE"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+    
+    - name: 硬件信息
+      working-directory: /XIAOMI-4A_100M
+      run: |
+         echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
+         echo -e "UserName: $(whoami) \n"
+         echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB') \n"
+         
+    - name: 拉取OpenWRT仓库
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+        
+    - name: 检测配置信息
+      run: |
+        [-e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
+        [-e $LOAD_FILES ] && echo "::set-output name=files::success"
+        [-e $OPENWRT_PATCH ] && echo "::set-output name=openwrtpatch::success"
+        [-e $BEFOR_PATCH ] && echo "::set-output name=beforpatch::success"
+        [-e $AFTER_PATCH ] && echo "::set-output name=afterpatch::success"
+    
+    
+    - name: 替换软件源配置
+      if: env.REPLACE_FEEDS == 'true' && steps.organize.outputs.feeds == 'success'
+      run: |
+        cd openwrt
+        rm -f openwrt/feeds.conf.default
+        mv $FEEDS_FILE openwrt/feeds.conf.default
+    
+    
+    
+    
+    - name: 清理ActionsRuns旧数据
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 5
+        
+    - name: 清理Releases旧数据
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
+        keep_latest: 2
+        delete_tags: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
