@@ -1,3 +1,3 @@
-#after make
+#!/bin/bash
 
 
