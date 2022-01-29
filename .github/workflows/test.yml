@@ -128,12 +128,6 @@ jobs:
     - name: 执行仓库脚本
       if: env.RUN_OPENWRTPATCH == 'true'
       run: |
-        echo $OPENWRT_PATCH
-        ls
-        ls XIAOMI-4A_GIGABit/
-        echo "......."
-        ls $Resoure_DIR
-        [ -e $OPENWRT_PATCH ] && echo "file in" || echo "no have"
         chmod +x $OPENWRT_PATCH
         cd openwrt
         $GITHUB_WORKSPACE/$OPENWRT_PATCH
@@ -147,9 +141,9 @@ jobs:
     - name: 执行编译前脚本
       if: env.RUN_BEFORPATCH == 'true'
       run: |
-        [ -e BEFOR_PATCH ] && chmod +x $BEFOR_PATCH
-        [ -e BEFOR_PATCH ] && cd openwrt
-        [ -e BEFOR_PATCH ] && $GITHUB_WORKSPACE/$BEFOR_PATCH
+        chmod +x $BEFOR_PATCH
+        cd openwrt
+        $GITHUB_WORKSPACE/$BEFOR_PATCH
     
     - name: 下载编译所需
       id: makedownload
@@ -177,9 +171,9 @@ jobs:
     - name: 执行编译后脚本
       if: env.RUN_AFTERPATCH == 'true'
       run: |
-        [ -e $AFTER_PATCH ] && chmod +x $AFTER_PATCH
-        [ -e $AFTER_PATCH ] && cd openwrt
-        [ -e $AFTER_PATCH ] && $GITHUB_WORKSPACE/$AFTER_PATCH
+        chmod +x $AFTER_PATCH
+        cd openwrt
+        $GITHUB_WORKSPACE/$AFTER_PATCH
     
     - name: 上传固件
       uses: actions/upload-artifact@main
