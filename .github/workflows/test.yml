@@ -113,11 +113,11 @@ jobs:
         
     - name: 检测配置信息
       run: |
-        echo "::set-output name=feeds::success"
-        echo "::set-output name=files::success"
-        echo "::set-output name=openwrtpatch::success"
-        echo "::set-output name=beforpatch::success"
-        echo "::set-output name=afterpatch::success"
+        [ -e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
+        [ -e $FEEDS_FILE ] && echo "::set-output name=files::success"
+        [ -e $FEEDS_FILE ] && echo "::set-output name=openwrtpatch::success"
+        [ -e $FEEDS_FILE ] && echo "::set-output name=beforpatch::success"
+        [ -e $FEEDS_FILE ] && echo "::set-output name=afterpatch::success"
         ls
         ls openwrt
         ls $Resoure_DIR
