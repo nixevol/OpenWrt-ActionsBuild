@@ -97,7 +97,7 @@ jobs:
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
     
-    - name: 提取硬件信息
+    - name: 提取系统信息
       working-directory: /workdir
       run: |
          echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
@@ -109,9 +109,18 @@ jobs:
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        
+    
+    - name: 检查文件状态
+      id: check
+      run: |
+        [ -e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
+        [ -e $FILES_PATH ] && echo "::set-output name=files::success"
+        [ -e $OPENWRT_PATCH ] && echo "::set-output name=patch::success"
+        [ -e $BEFOR_PATCH ] && echo "::set-output name=befor::success"
+        [ -e $AFTER_PATCH ] && echo "::set-output name=after::success"
+    
     - name: 替换软件源配置
-      if: env.REPLACE_FEEDS == 'true'
+      if: env.REPLACE_FEEDS == 'true' && steps.check.outputs.feeds == 'success'
       run: |
         [ -e $FEEDS_FILE ] && rm -f openwrt/feeds.conf.default
         [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.default
@@ -120,13 +129,11 @@ jobs:
       run: mv $CONFIG_FILE openwrt/.config
       
     - name: 导入补丁目录
-      if: env.LOAD_FILES == 'true'
-      run: |
-        [ -e $FILES_PATH ] && mv $FILES_PATH openwrt/files
-        [ -e openwrt/files ] && ls openwrt/files
-    
+      if: env.LOAD_FILES == 'true' && steps.check.outputs.files == 'success'
+      run: mv $FILES_PATH openwrt/files
+        
     - name: 执行仓库脚本
-      if: env.RUN_OPENWRTPATCH == 'true'
+      if: env.RUN_OPENWRTPATCH == 'true' && steps.check.outputs.patch == 'success'
       run: |
         chmod +x $OPENWRT_PATCH
         cd openwrt
@@ -139,7 +146,7 @@ jobs:
         ./scripts/feeds update -a && ./scripts/feeds install -a
     
     - name: 执行编译前脚本
-      if: env.RUN_BEFORPATCH == 'true'
+      if: env.RUN_BEFORPATCH == 'true' && steps.check.outputs.befor == 'success'
       run: |
         chmod +x $BEFOR_PATCH
         cd openwrt
@@ -169,7 +176,7 @@ jobs:
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
     
     - name: 执行编译后脚本
-      if: env.RUN_AFTERPATCH == 'true'
+      if: env.RUN_AFTERPATCH == 'true' && steps.check.outputs.after == 'success'
       run: |
         chmod +x $AFTER_PATCH
         cd openwrt
@@ -177,7 +184,7 @@ jobs:
     
     - name: 上传固件
       uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
+      if: steps.make.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
@@ -189,7 +196,7 @@ jobs:
         keep_minimum_runs: 5
         
     - name: 生成release标签
-      id: tag
+      id: releasetag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
@@ -200,11 +207,11 @@ jobs:
         
     - name: 上传固件到Release
       uses: softprops/action-gh-release@v1
-      if: env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && steps.releasetag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
+        tag_name: ${{ steps.releasetag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
         
