@@ -124,8 +124,8 @@ jobs:
       if: env.REPLACE_FEEDS == 'true' && steps.organize.outputs.feeds == 'success'
       run: |
         cd openwrt
-        rm -f openwrt/feeds.conf.default
-        mv $FEEDS_FILE openwrt/feeds.conf.default
+        rm -f feeds.conf.default
+        mv $FEEDS_FILE feeds.conf.default
     
     
     
