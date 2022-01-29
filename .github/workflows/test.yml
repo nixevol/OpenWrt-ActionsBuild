@@ -134,9 +134,9 @@ jobs:
         echo "......."
         ls $Resoure_DIR
         [ -e $OPENWRT_PATCH ] && echo "file in" || echo "no have"
-        [ -e $OPENWRT_PATCH ] && chmod +x $OPENWRT_PATCH
+        chmod +x $OPENWRT_PATCH
         cd openwrt
-        [ -e $OPENWRT_PATCH ] && $GITHUB_WORKSPACE/$OPENWRT_PATCH
+        $GITHUB_WORKSPACE/$OPENWRT_PATCH
         
     - name: 更新并安装软件源
       run: |
