@@ -8,8 +8,8 @@ on:
         type: choice
         description: '路由器资源目录'
         options:
-        - "XIAOMI_4A-GIGABit"
-        - "XIAOMI_4A-100M"
+        - "XIAOMI-4A_GIGABit"
+        - "XIAOMI-4A_100M"
       repo_url:
         description: '仓库地址'
         default: 'https://github.com/openwrt/openwrt'
