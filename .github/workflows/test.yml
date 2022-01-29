@@ -133,6 +133,7 @@ jobs:
         ls XIAOMI-4A_GIGABit/
         echo "......."
         ls $Resoure_DIR
+        [ -e $OPENWRT_PATCH ] && echo "file in" || echo "no have"
         [ -e $OPENWRT_PATCH ] && chmod +x $OPENWRT_PATCH
         [ -e $OPENWRT_PATCH ] && cd openwrt
         [ -e $OPENWRT_PATCH ] && $GITHUB_WORKSPACE/$OPENWRT_PATCH
