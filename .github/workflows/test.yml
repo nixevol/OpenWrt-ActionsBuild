@@ -63,7 +63,7 @@ env:
   
   REPO_BRANCH: ${{ github.event.inputs.repo_branch }}
   CONFIG_FILE: '${{ github.event.inputs.resource_directory }}/${{ github.event.inputs.config_file }}'
-  FEEDS_FILE: '${{ github.event.inputs.resource_directory }}/feeds.config.default'
+  FEEDS_FILE: '${{ github.event.inputs.resource_directory }}/feeds.conf.default'
   REPLACE_FEEDS: ${{ github.event.inputs.feeds_file }}
   LOAD_FILES: ${{ github.event.inputs.files_path }}
   FILES_PATH: '${{ github.event.inputs.resource_directory }}/files'
