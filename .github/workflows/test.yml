@@ -184,7 +184,6 @@ jobs:
     
     - name: 整理文件
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && steps.make.outputs.status == 'success' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
@@ -192,7 +191,6 @@ jobs:
         
     - name: 上传固件
       uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
