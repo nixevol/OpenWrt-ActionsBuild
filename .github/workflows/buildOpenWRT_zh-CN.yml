@@ -1,73 +1,89 @@
-# This is a basic workflow to help you get started with Actions
-
 name: 编译OpenWRT固件
 
 on: 
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      openwrt_repourl:
-        description: 'Openwrt 仓库地址'
+      resource_directory:
+        type: choice
+        description: '路由器资源目录'
+        options:
+        - "XIAOMI-4A_GIGABit"
+        - "XIAOMI-4A_100M"
+      repo_url:
+        description: '仓库地址'
         default: 'https://github.com/openwrt/openwrt'
-      openwrt_branch:
-        description: 'Openwrt 版本分支'
+      repo_branch:
+        description: '版本分支'
         default: 'v21.02.1'
       feeds_file:
-        description: 'feeds 文件路径'
-        default: 'XIAOMI-4A_GIGABit/feeds.conf.default'
-      config_file:
-        description: 'config 文件路径'
-        default: 'XIAOMI-4A_GIGABit/.config'
-      files_path:
-        description: 'files 补丁目录'
-        default: 'XIAOMI-4A_GIGABit/files'
-      openwrt_patch:
-        description: 'openwrt 补丁路径'
-        default: 'XIAOMI-4A_GIGABit/patch.sh'
-      befor_file:
-        description: '编译前脚本路径'
-        default: 'XIAOMI-4A_GIGABit/make_befor.sh'
-      after_file:
-        description: '编译后脚本路径'
-        default: 'XIAOMI-4A_GIGABit/make_after.sh'
-      upload_bindir:
         type: choice
-        description: '上传bin目录'
+        description: '替换软件源配置'
         options:
-        - false
-        - true
+        - "true"
+        - "false"
+      config_file:
+        description: 'config 文件名称'
+        default: '.config'
+      files_path:
+        type: choice
+        description: '导入补丁目录'
+        options:
+        - "true"
+        - "false"
+      openwrt_patch:
+        type: choice
+        description: '执行仓库脚本'
+        options:
+        - "true"
+        - "false"
+      befor_patch:
+        type: choice
+        description: '执行编译前脚本'
+        options:
+        - "true"
+        - "false"
+      after_patch:
+        type: choice
+        description: '执行编译后脚本'
+        options:
+        - "true"
+        - "false"
       upload_release:
         type: choice
         description: '发布到release'
         options:
-        - false
-        - true
+        - "false"
+        - "true"
 env:
-  OpenWrt_URL: ${{ github.event.inputs.openwrt_repourl }}
-  OpenWrt_BRANCH: ${{ github.event.inputs.openwrt_branch }}
-  FEEDS_CONF: ${{ github.event.inputs.feeds_file }}
-  CONFIG_FILE: ${{ github.event.inputs.config_file }}
-  FILES_PATH: ${{ github.event.inputs.files_path }}
-  PATCH_SH: ${{ github.event.inputs.openwrt_patch }}
-  BEFORMAKE_SH: ${{ github.event.inputs.befor_file }}
-  AFTERMAKE_SH: ${{ github.event.inputs.after_file }}
+  TIMEZONE: Asia/Shanghai
+  Resoure_DIR: ${{ github.event.inputs.resource_directory }}
   
+  REPO_URL: ${{ github.event.inputs.repo_url }}
   
-  TIME_ZONE: Asia/Shanghai
-  UPLOAD_FIRMWARE: true
-  
-  UPLOAD_BinDIR: ${{ github.event.inputs.upload_bindir }}
+  REPO_BRANCH: ${{ github.event.inputs.repo_branch }}
+  CONFIG_FILE: '${{ github.event.inputs.resource_directory }}/${{ github.event.inputs.config_file }}'
+  FEEDS_FILE: '${{ github.event.inputs.resource_directory }}/feeds.conf.default'
+  REPLACE_FEEDS: ${{ github.event.inputs.feeds_file }}
+  LOAD_FILES: ${{ github.event.inputs.files_path }}
+  FILES_PATH: '${{ github.event.inputs.resource_directory }}/files'
+  RUN_OPENWRTPATCH: ${{ github.event.inputs.openwrt_patch }}
+  OPENWRT_PATCH: '${{ github.event.inputs.resource_directory }}/openwrt_patch.sh'
+  RUN_BEFORPATCH: ${{ github.event.inputs.befor_patch }}
+  BEFOR_PATCH: '${{ github.event.inputs.resource_directory }}/make_befor.sh'
+  RUN_AFTERPATCH: ${{ github.event.inputs.after_patch }}
+  AFTER_PATCH: '${{ github.event.inputs.resource_directory }}/make_after.sh'
   UPLOAD_RELEASE: ${{ github.event.inputs.upload_release }}
   
-jobs: 
-  build: 
+jobs:
+  build:
     runs-on: ubuntu-20.04
-    
+
     steps:
-    - name: 检出项目
+    - name: 检出仓库数据
       uses: actions/checkout@main
-      
-    - name: 初始化环境
+
+    - name: 初始化编译环境
       env:
         DEBIAN_FRONTEND: noninteractive
         #非交互式环境
@@ -77,65 +93,77 @@ jobs:
         sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
-        sudo timedatectl set-timezone "$TIME_ZONE"
+        sudo timedatectl set-timezone "$TIMEZONE"
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
     
-    - name: 硬件信息
+    - name: 提取系统信息
       working-directory: /workdir
       run: |
          echo -e "CPU: $(cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c) \n"
          echo -e "UserName: $(whoami) \n"
          echo -e "SystemInfo: \n$(lsb_release  -a 2>&1 | grep -vi 'No LSB') \n"
          
-         
-    - name: 拉取源代码
+    - name: 拉取OpenWRT仓库
       working-directory: /workdir
       run: |
-        df -hT $PWD
-        git clone $OpenWrt_URL -b $OpenWrt_BRANCH openwrt
+        git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        
-        
+    
+    - name: 检查文件状态
+      id: check
+      run: |
+        [ -e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
+        [ -e $FILES_PATH ] && echo "::set-output name=files::success"
+        [ -e $OPENWRT_PATCH ] && echo "::set-output name=patch::success"
+        [ -e $BEFOR_PATCH ] && echo "::set-output name=befor::success"
+        [ -e $AFTER_PATCH ] && echo "::set-output name=after::success"
+    
+    - name: 替换软件源配置
+      if: env.REPLACE_FEEDS == 'true' && steps.check.outputs.feeds == 'success'
+      run: |
+        [ -e $FEEDS_FILE ] && rm -f openwrt/feeds.conf.default
+        [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.default
+    
     - name: 加载固件配置
-      run: |
-        [ -e $CONFIG_FILE ] && echo "固件配置文件存在" || echo "固件配置文件不存在"
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-    
-    - name: 加载files目录
-      run: |
-        [ -e $FILES_PATH ] && echo "目录存在" || echo "目录不存在"
-        [ -e $FILES_PATH ] && mv $FILES_PATH openwrt/files
+      run: mv $CONFIG_FILE openwrt/.config
+      
+    - name: 导入补丁目录
+      if: env.LOAD_FILES == 'true' && steps.check.outputs.files == 'success'
+      run: mv $FILES_PATH openwrt/files
         
-    - name: 执行OpenWRT补丁脚本
+    - name: 执行仓库脚本
+      if: env.RUN_OPENWRTPATCH == 'true' && steps.check.outputs.patch == 'success'
       run: |
-        [ -e $PATCH_SH ] && echo "补丁文件存在" || echo "补丁文件不存在"
-        [ -e $PATCH_SH ] && chmod +x $PATCH_SH
-        [ -e $PATCH_SH ] && cd openwrt
-        [ -e $PATCH_SH ] && $GITHUB_WORKSPACE/$PATCH_SH
-    
-    - name: 更新并安装Feeds
-      run: |
-        cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a && ./scripts/feeds update -a && ./scripts/feeds install -a
+        chmod +x $OPENWRT_PATCH
+        cd openwrt
+        $GITHUB_WORKSPACE/$OPENWRT_PATCH
         
+    - name: 更新并安装软件源
+      run: |
+        cd openwrt 
+        ./scripts/feeds update -a && ./scripts/feeds install -a
+        ./scripts/feeds update -a && ./scripts/feeds install -a
+    
     - name: 执行编译前脚本
+      if: env.RUN_BEFORPATCH == 'true' && steps.check.outputs.befor == 'success'
       run: |
-        [ -e $BEFORMAKE_SH ] && echo "编译前脚本文件存在" || echo "编译前脚本文件不存在"
-        [ -e BEFORMAKE_SH ] && chmod +x $BEFORMAKE_SH
-        [ -e BEFORMAKE_SH ] && cd openwrt
-        [ -e BEFORMAKE_SH ] && $GITHUB_WORKSPACE/$BEFORMAKE_SH
+        chmod +x $BEFOR_PATCH
+        cd openwrt
+        $GITHUB_WORKSPACE/$BEFOR_PATCH
     
     - name: 下载编译所需
-      id: makedown
+      id: makedownload
       run: |
         cd openwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-    
+        
+        
     - name: 编译固件
-      id: make
+      id: makefirmware
       run: |
         cd openwrt
         echo -e "$(nproc) thread cpu"
@@ -147,43 +175,35 @@ jobs:
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
     
-    - name: 检查空间使用情况
-      if: (!cancelled())
-      run: df -hT
-      
     - name: 执行编译后脚本
+      if: env.RUN_AFTERPATCH == 'true' && steps.check.outputs.after == 'success'
       run: |
-        [ -e $AFTERMAKE_SH ] && echo "编译后脚本文件存在" || echo "编译后脚本文件不存在"
-        [ -e $AFTERMAKE_SH ] && chmod +x $AFTERMAKE_SH
-        [ -e $AFTERMAKE_SH ] && cd openwrt
-        [ -e $AFTERMAKE_SH ] && $GITHUB_WORKSPACE/$AFTERMAKE_SH
-      
-    - name: 上传 bin 目录
-      uses: actions/upload-artifact@main
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BinDIR == 'true'
-      with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        path: openwrt/bin
+        chmod +x $AFTER_PATCH
+        cd openwrt
+        $GITHUB_WORKSPACE/$AFTER_PATCH
     
     - name: 整理文件
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
         
-       
     - name: 上传固件
-      uses: actions/upload-artifact@main
-      if: steps.organize.outputs.status == 'success' && !cancelled()
+      uses: actions/upload-artifact@main && steps.makefirmware.outputs.status == 'success'
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
+    
+    - name: 清理ActionsRuns旧数据
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 5
         
     - name: 生成release标签
-      id: tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      id: releasetag
+      if: env.UPLOAD_RELEASE == 'true' && steps.makefirmware.outputs.status == 'success' && !cancelled()
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
@@ -191,28 +211,21 @@ jobs:
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "::set-output name=status::success"
         
-    - name: 上传固件到release
+    - name: 上传固件到Release
       uses: softprops/action-gh-release@v1
-      if: steps.tag.outputs.status == 'success' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && steps.releasetag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
+        tag_name: ${{ steps.releasetag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
-
-    - name: 退出workflow
-      uses: GitRML/delete-workflow-runs@main
-      with:
-        retain_days: 1
-        keep_minimum_runs: 3
-
-    - name: 删除旧的 Releases
+        
+    - name: 清理Releases旧数据
       uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 3
+        keep_latest: 2
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
