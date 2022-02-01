@@ -1,4 +1,4 @@
-name: 编译OpenWRT固件
+name: 编译OpenWRT固件_自定义
 
 on: 
   repository_dispatch:
