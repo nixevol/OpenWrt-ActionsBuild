@@ -22,8 +22,6 @@ jobs:
         df -hT $PWD
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        sudo mkdir -p /workdir/testupload
-        sudo mkdir -p /workdir/testupload/test
     - name: 设置路径
       working-directory: /workdir
       run: |
