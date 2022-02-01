@@ -1,4 +1,4 @@
-name: 编译OpenWRT固件_自定义
+name: 编译OpenWRT固件_自定义仓库
 
 on: 
   repository_dispatch:
@@ -57,9 +57,12 @@ on:
         - "true"
 env:
   TIMEZONE: Asia/Shanghai
+  
+  UPLOAD_ACTIONSRUNS: true
+  
   Resoure_DIR: ${{ github.event.inputs.resource_directory }}
   
-  REPO_URL: ${{ github.event.inputs.repo_url }}
+  REPO_URL: https://github.com/openwrt/openwrt
   
   REPO_BRANCH: ${{ github.event.inputs.repo_branch }}
   CONFIG_FILE: '${{ github.event.inputs.resource_directory }}/${{ github.event.inputs.config_file }}'
@@ -74,6 +77,7 @@ env:
   RUN_AFTERPATCH: ${{ github.event.inputs.after_patch }}
   AFTER_PATCH: '${{ github.event.inputs.resource_directory }}/make_after.sh'
   UPLOAD_RELEASE: ${{ github.event.inputs.upload_release }}
+  
   
 jobs:
   build:
@@ -184,13 +188,15 @@ jobs:
     
     - name: 整理文件
       id: organize
+	  if: steps.makefirmware.outputs.status == 'success'
       run: |
         cd openwrt/bin/targets/*/*
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
         
     - name: 上传固件
-      uses: actions/upload-artifact@main && steps.makefirmware.outputs.status == 'success'
+      uses: actions/upload-artifact@main
+	  if: env.UPLOAD_ACTIONSRUNS == 'true' && steps.organize.outputs.status == 'success'
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
