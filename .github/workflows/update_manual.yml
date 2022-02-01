@@ -4,7 +4,9 @@ on:
   repository_dispatch:
   workflow_dispatch:
 env:
-  UPDATESH: 'update.sh'
+  UPDATESH: 'UpdateActionData.sh'
+  EXPLAIN: "manual update"
+  
 jobs: 
   build: 
     runs-on: ubuntu-20.04
@@ -28,19 +30,14 @@ jobs:
         echo "$GITHUB_WORKSPACE"
         ln -sf /workdir $GITHUB_WORKSPACE
       
-    - name: 输出
+    - name: 执行更新脚本
       run: |
-        ${GITHUB_WORKSPACE}/$UPDATESH "${{ secrets.GIT_TOKEN }}" "${{ secrets.GIT_UNAME }}" "${{ secrets.GIT_UEMAIL }}"
+        ${GITHUB_WORKSPACE}/$UPDATESH "${{ secrets.GIT_TOKEN }}" "${{ secrets.GIT_UNAME }}" "${{ secrets.GIT_UEMAIL }}" "$EXPLAIN"
         
         
-    - name: Delete workflow runs
+    - name: 删除运行记录
       uses: GitRML/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 2
         
-    - name: 退出workflow
-      uses: GitRML/delete-workflow-runs@main
-      with:
-        retain_days: 1
-        keep_minimum_runs: 3
