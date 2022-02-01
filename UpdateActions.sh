@@ -13,7 +13,7 @@ then
   if [ "${file##*/}" == "update_auto.yml" ]
   then
     echo ""
-  if [ "${file##*/}" == "update_manual.yml"]
+  elif [ "${file##*/}" == "update_manual.yml"]
   then
     echo ""
   elif [ "${file##*/}" == "buildOpenWRT_custom.yml" ]
