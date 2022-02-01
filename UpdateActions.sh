@@ -10,12 +10,20 @@ for file in uploaddir/.github/workflows/*
 do
 if [ -f "$file" ]
 then
-  if [ "${file##*/}" == "update.yml" ]
+  if [ "${file##*/}" == "update_auto.yml" ]
   then
-    echo "nothing to do"
+    echo ""
+  if [ "${file##*/}" == "update_manual.yml"]
+  then
+    echo ""
   elif [ "${file##*/}" == "buildOpenWRT_custom.yml" ]
   then
-    echo "nothing to do"
+    b=`sed -n "/        description: '路由器资源目录'/{=;}" $file` && head -n ${b} $file > tmp.yml
+    echo -e "        options:\n$pl" >> tmp.yml
+    sed -n '/repo_.*:/,$p' $file >> tmp.yml
+    rm -f uploaddir/.github/workflows/${file##*/}
+    cp tmp.yml uploaddir/.github/workflows/${file##*/}
+    rm -f tmp.yml
   elif [ -f "$file" ]
   then
     repourl=`cat $file | grep "REPO_URL:" | sed 's/REPO_URL://g' | sed 's/ //g'`
