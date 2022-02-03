@@ -6,7 +6,7 @@ git config --global user.name "$2"
 git config --global user.email "$3"
 pl=`ls -d */ | grep -v ".git" | sed "s/  / /g"|sed "s/\///g" | sed 's/^/          - "/g' | sed 's/$/"/g'`
 cd ../
-for file in uploaddir/.github/workflows/*.yml
+for file in uploaddir/.github/workflows/*
 do
 if [ -f "$file" ]
 then
