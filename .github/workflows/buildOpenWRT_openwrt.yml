@@ -11,6 +11,7 @@ on:
           - "XIAOMI-4A_100M"
           - "XIAOMI-4A_GIGABit"
       repo_branch:
+        type: choice
         description: '版本分支'
         options:
           - "lede-17.01"
