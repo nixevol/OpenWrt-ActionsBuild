@@ -8,6 +8,7 @@ pl=`ls -d */ | grep -v ".git" | sed "s/  / /g"|sed "s/\///g" | sed 's/^/        
 cd ../
 for file in uploaddir/.github/workflows/*.yml
 do
+echo "${file##*/}"
 if [ -f "$file" ]
 then
   if [ "${file##*/}" == "update_auto.yml" ]
