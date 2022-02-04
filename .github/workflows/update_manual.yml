@@ -1,21 +1,21 @@
 name: 手动更新Actions数据
-          - "XIAOMI-4A_100M"	
-           - "XIAOMI-4A_GIGABit"	on: 
+
+on: 
   repository_dispatch:
   workflow_dispatch:
 env:
   UPDATESH: 'UpdateActionData.sh'
   EXPLAIN: "manual update"
-
- jobs: 
+  
+jobs: 
   build: 
     runs-on: ubuntu-20.04
-
-     steps:
+    
+    steps:
     - name: 检出项目
       uses: actions/checkout@main
-
-     - name: 初始化
+      
+    - name: 初始化
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
