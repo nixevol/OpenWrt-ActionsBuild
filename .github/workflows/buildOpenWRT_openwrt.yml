@@ -8,11 +8,16 @@ on:
         type: choice
         description: '路由器资源目录'
         options:
-        - "XIAOMI-4A_GIGABit"
-        - "XIAOMI-4A_100M"
+          - "XIAOMI-4A_100M"
+          - "XIAOMI-4A_GIGABit"
       repo_branch:
         description: '版本分支'
-        default: 'v21.02.1'
+        options:
+          - "lede-17.01"
+          - "master"
+          - "openwrt-18.06"
+          - "openwrt-19.07"
+          - "openwrt-21.02"
       feeds_file:
         type: choice
         description: '替换软件源配置'
