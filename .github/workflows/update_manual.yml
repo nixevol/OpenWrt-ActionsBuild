@@ -30,6 +30,7 @@ jobs:
       
     - name: 执行更新脚本
       run: |
+        chmod +x $UPDATESH
         ${GITHUB_WORKSPACE}/$UPDATESH "${{ secrets.GIT_TOKEN }}" "${{ secrets.GIT_UNAME }}" "${{ secrets.GIT_UEMAIL }}" "$EXPLAIN"
         
         
