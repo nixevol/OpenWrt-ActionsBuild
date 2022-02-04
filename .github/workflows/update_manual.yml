@@ -1,3 +1,41 @@
-        options:
-          - "XIAOMI-4A_100M"
-          - "XIAOMI-4A_GIGABit"
+name: 手动更新Actions数据
+
+on: 
+  repository_dispatch:
+  workflow_dispatch:
+env:
+  UPDATESH: 'UpdateActionData.sh'
+  EXPLAIN: "manual update"
+  
+jobs: 
+  build: 
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: 检出项目
+      uses: actions/checkout@main
+      
+    - name: 初始化
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        df -hT $PWD
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+    - name: 设置路径
+      working-directory: /workdir
+      run: |
+        echo "$GITHUB_WORKSPACE"
+        ln -sf /workdir $GITHUB_WORKSPACE
+      
+    - name: 执行更新脚本
+      run: |
+        chmod +x $UPDATESH
+        ${GITHUB_WORKSPACE}/$UPDATESH "${{ secrets.GIT_TOKEN }}" "${{ secrets.GIT_UNAME }}" "${{ secrets.GIT_UEMAIL }}" "$EXPLAIN"
+        
+        
+    - name: 删除运行记录
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 2
