@@ -14,10 +14,10 @@ on:
         type: choice
         description: '版本分支'
         options:
-          - "lede-17.01"
           - "master"
           - "openwrt-18.06"
-          - "openwrt-19.07"
+          - "openwrt-18.06-dev"
+          - "openwrt-18.06-k5.4"
           - "openwrt-21.02"
       feeds_file:
         type: choice
