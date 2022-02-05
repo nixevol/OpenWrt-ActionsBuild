@@ -21,6 +21,7 @@
 **编译OpenWRT**
 
 点击仓库上方的 **Actions** 按钮进行openwrt源仓库选择或者选择自定义仓库及分支 并选择脚本执行开关进行编译
+![image](https://user-images.githubusercontent.com/35430449/152649957-836b4ff6-81e8-49d8-9a39-61ecf37e3dde.png)
 
 **仓库功能**
 
