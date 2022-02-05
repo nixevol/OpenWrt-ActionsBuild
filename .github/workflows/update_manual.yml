@@ -28,7 +28,7 @@ jobs:
       run: |
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        
+        sudo timedatectl set-timezone "Asia/Shanghai"
     - name: 处理项目路径
       working-directory: /workdir
       run: ln -sf /workdir $GITHUB_WORKSPACE
