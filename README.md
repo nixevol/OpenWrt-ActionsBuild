@@ -1,9 +1,11 @@
 **欢迎使用NIXEVOL的OpenWRT固件编译仓库**
+
 **本仓库采用GITHUB的Actions功能进行OpenWRT固件编译**
 
 仓库使用说明如下：
 
-1.自定义固件补丁及其他补充
+**自定义固件补丁及其他补充**
+
 具体例子可参考 XIAOMI_4A-GIGABit 目录下的脚本及文件
 
  files目录 在编译的时候，会把files文件夹里的文件编译到固件的根目录（具体自行上网搜索其作用）
@@ -18,6 +20,25 @@
  
  make_after.sh 此脚本会在编译固件完成后执行
  
-1.自定义仓库编译OpenWRT
+**编译OpenWRT**
 
+点击仓库上方的 **Actions** 按钮进行openwrt源仓库选择或者选择自定义仓库及分支 并选择脚本执行开关进行编译
+
+**仓库功能**
+
+仓库设置(Settings->Secrets->Actions)添加3个仓库变量 GIT_TOKEN , GIT_UNAME , GITUMAIL
+![image](https://user-images.githubusercontent.com/35430449/152649432-c7f627f0-8c27-4056-a34f-7c1f4db499d0.png)
+
+GIT_TOKEN:![image](https://user-images.githubusercontent.com/35430449/152649583-09760b68-3ce4-4271-a70a-8e26b91afef0.png)
+
+GIT_UNAME:![image](https://user-images.githubusercontent.com/35430449/152649623-a1e8588a-8581-4d20-85b7-d6d5178b0ab7.png)
+
+GIT_UMAIL：GITHUB 注册邮箱
+
+
+每天凌晨0点将会对.github/workflows/下的 yml文件 进行自动更新（自动更新本地固件脚本目录列表及openwrt固件源分支列表）
+
+也可以手动更新
+
+更多具体功能请自行探索，本人不太会描述，所以有人写了更好的readme.me请告知一声，让我抄一下作业。
 
