@@ -2,14 +2,12 @@
 upurl=`git config -l | grep "remote.origin.url=" | sed "s|remote.origin.url=https://|@|g"`
 git clone https://${1}${upurl} uploaddir
 cd uploaddir
-git config -l
 git config --global user.name "$2"
 git config --global user.email "$3"
 pl=`ls -d */ | grep -v ".git" | sed "s/  / /g"|sed "s/\///g" | sed 's/^/          - "/g' | sed 's/$/"/g'`
 cd ../
 for file in uploaddir/.github/workflows/*.yml
 do
-echo "${file##*/}"
 if [ -f "$file" ]
 then
   if [ "${file##*/}" == "update_auto.yml" ]
