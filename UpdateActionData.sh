@@ -49,7 +49,7 @@ then
 fi
 done
 cd uploaddir
-git status && git add . && git commit -m "$3 for $(date "+%Y/%m/%d %H:%M:%S")" && git push
+git status && git add . && git commit -m "$4 for $(date "+%Y/%m/%d %H:%M:%S")" && git push
 cd ../
 rm -rf uploaddir
  
