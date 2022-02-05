@@ -31,6 +31,7 @@ then
     cd branchdir
     bl=`git branch -r | grep -v "\->"|grep -v "*"|sed "s|remote/||g"|sed "s|origin/|        - \"|g"|sed "s/$/\"/"` >../tmp.yml
     cd ../
+    rm -rf branchdir
     b=`sed -n "/        description: '版本分支'/{=;}" $file` && head -n ${b} $file > tmp.yml
     echo -e "        options:\n$bl" >> tmp.yml
     sed -n '/feeds_file:/,$p' $file >> tmp.yml
@@ -43,7 +44,7 @@ then
     rm -f uploaddir/.github/workflows/${file##*/}
     cp tmp.yml uploaddir/.github/workflows/${file##*/}
     rm -f tmp.yml
-    rm -rf branchdir
+    
   fi
 fi
 done
