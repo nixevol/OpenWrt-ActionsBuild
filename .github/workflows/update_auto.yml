@@ -1,0 +1,40 @@
+name: 自动更新Actions数据
+
+on:
+  push:
+  schedule:
+    - cron: '0 16 * * *'
+env:
+  UPDATESH: 'UpdateActionData.sh'
+  EXPLAIN: "auto update"
+  
+jobs: 
+  build: 
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: 检出项目
+      uses: actions/checkout@main
+      
+    - name: 初始化目录
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
+        sudo timedatectl set-timezone "Asia/Shanghai"
+    - name: 处理项目路径
+      working-directory: /workdir
+      run: ln -sf /workdir $GITHUB_WORKSPACE
+      
+    - name: 执行更新脚本
+      run: |
+        chmod +x $UPDATESH
+        ${GITHUB_WORKSPACE}/$UPDATESH "${{ secrets.GIT_TOKEN }}" "${{ secrets.GIT_UNAME }}" "${{ secrets.GIT_UEMAIL }}" "$EXPLAIN"
+        
+        
+    - name: 处理升级记录
+      uses: GitRML/delete-workflow-runs@main
+      with:
+        retain_days: 2
+        keep_minimum_runs: 3
