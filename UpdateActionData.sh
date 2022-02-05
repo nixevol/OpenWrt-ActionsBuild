@@ -45,6 +45,7 @@ then
     rm -f uploaddir/.github/workflows/${file##*/}
     cp tmp.yml uploaddir/.github/workflows/${file##*/}
     rm -f tmp.yml
+    rm -rf branchdir
   fi
 fi
 done
