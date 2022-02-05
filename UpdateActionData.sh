@@ -21,6 +21,10 @@ then
     b=`sed -n "/        description: '路由器资源目录'/{=;}" $file` && head -n ${b} $file > tmp.yml
     echo -e "        options:\n$pl" >> tmp.yml
     sed -n '/repo_.*:/,$p' $file >> tmp.yml
+    o=`cat tmp.yml | grep "#  update for"`
+    t=$(date "+%Y/%m/%d %H:%M:%S")
+    n=`echo "#  update for $t  #"`
+    sed -i "s|$o|$n|" tmp.yml
     rm -f uploaddir/.github/workflows/${file##*/}
     cp tmp.yml uploaddir/.github/workflows/${file##*/}
     rm -f tmp.yml
