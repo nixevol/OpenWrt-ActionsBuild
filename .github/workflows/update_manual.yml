@@ -3,6 +3,13 @@ name: 手动更新Actions数据
 on: 
   repository_dispatch:
   workflow_dispatch:
+    inputs:
+      retain_days:
+        description: '升级记录保留天数'
+        default: '2'
+      keep_minimum_runs:
+        description: '升级记录保留数量'
+        default: '3'
 env:
   UPDATESH: 'UpdateActionData.sh'
   EXPLAIN: "manual update"
@@ -15,18 +22,16 @@ jobs:
     - name: 检出项目
       uses: actions/checkout@main
       
-    - name: 初始化
+    - name: 初始化目录
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        df -hT $PWD
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-    - name: 设置路径
+        
+    - name: 处理项目路径
       working-directory: /workdir
-      run: |
-        echo "$GITHUB_WORKSPACE"
-        ln -sf /workdir $GITHUB_WORKSPACE
+      run: ln -sf /workdir $GITHUB_WORKSPACE
       
     - name: 执行更新脚本
       run: |
@@ -34,8 +39,8 @@ jobs:
         ${GITHUB_WORKSPACE}/$UPDATESH "${{ secrets.GIT_TOKEN }}" "${{ secrets.GIT_UNAME }}" "${{ secrets.GIT_UEMAIL }}" "$EXPLAIN"
         
         
-    - name: 删除运行记录
+    - name: 处理升级记录
       uses: GitRML/delete-workflow-runs@main
       with:
-        retain_days: 1
-        keep_minimum_runs: 1
+        retain_days: ${{ github.event.inputs.retain_days }}
+        keep_minimum_runs: ${{ github.event.inputs.keep_minimum_runs }}
