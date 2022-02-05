@@ -1,5 +1,3 @@
-**欢迎使用NIXEVOL的OpenWRT固件编译仓库**
-
 **本仓库采用GITHUB的Actions功能进行OpenWRT固件编译**
 
 仓库使用说明如下：
