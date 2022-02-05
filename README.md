@@ -29,11 +29,13 @@
 仓库设置(Settings->Secrets->Actions)添加3个仓库变量 GIT_TOKEN , GIT_UNAME , GITUMAIL
 ![image](https://user-images.githubusercontent.com/35430449/152649432-c7f627f0-8c27-4056-a34f-7c1f4db499d0.png)
 
-GIT_TOKEN:![image](https://user-images.githubusercontent.com/35430449/152649583-09760b68-3ce4-4271-a70a-8e26b91afef0.png)
+**GIT_TOKEN:**
+![image](https://user-images.githubusercontent.com/35430449/152649583-09760b68-3ce4-4271-a70a-8e26b91afef0.png)
 
-GIT_UNAME:![image](https://user-images.githubusercontent.com/35430449/152649623-a1e8588a-8581-4d20-85b7-d6d5178b0ab7.png)
+**GIT_UNAME:**
+![image](https://user-images.githubusercontent.com/35430449/152649623-a1e8588a-8581-4d20-85b7-d6d5178b0ab7.png)
 
-GIT_UMAIL：GITHUB 注册邮箱
+**GIT_UMAIL：**GITHUB 注册邮箱
 
 
 每天凌晨0点将会对.github/workflows/下的 yml文件 进行自动更新（自动更新本地固件脚本目录列表及openwrt固件源分支列表）
