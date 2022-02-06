@@ -164,3 +164,13 @@
 ![image](https://user-images.githubusercontent.com/35430449/152688142-6bdd4b7f-dd63-47de-94ef-e1fe3ef20702.png)
 
 
+
+### 创建可更新的yml脚本
+
+1. 进入.github/workflows目录下新建一个yml脚本，并从其他buildOpenWRT_xxx.yml 中复制代码进去（注意：请不要使用 **buildOpenWRT_custom.yml** 的代码）
+
+2. 将新建脚本内的 REPO_URL: 值更换为您需要自动更新分支列表的仓库链接，保存文件后再从 **Actions** 内执行 **手动更新Actions** 操作
+
+  例如：REPO_URL: https://github.com/coolsnowwolf/lede
+
+![image](https://user-images.githubusercontent.com/35430449/152689320-83ca9cf0-4c30-4404-8fb9-271117dd41b3.png)
