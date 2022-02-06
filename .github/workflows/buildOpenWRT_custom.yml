@@ -22,34 +22,34 @@ on:
         default: 'v21.02.1'
       feeds_file:
         type: choice
-        description: '替换软件源配置'
+        description: '替换软件源配置(feeds.conf.default)'
         options:
         - "true"
         - "false"
       config_file:
-        description: 'config 文件名称'
+        description: 'config 文件名称(.config)'
         default: '.config'
       files_path:
         type: choice
-        description: '导入补丁目录'
+        description: '导入补丁目录(files目录)'
         options:
         - "true"
         - "false"
       openwrt_patch:
         type: choice
-        description: '执行仓库脚本'
+        description: '执行仓库脚本(openwrt_patch.sh)'
         options:
         - "true"
         - "false"
       befor_patch:
         type: choice
-        description: '执行编译前脚本'
+        description: '执行编译前脚本(make_befor.sh)'
         options:
         - "true"
         - "false"
       after_patch:
         type: choice
-        description: '执行编译后脚本'
+        description: '执行编译后脚本(make_after.sh)'
         options:
         - "true"
         - "false"
