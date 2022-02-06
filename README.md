@@ -1,1 +1,5 @@
-## 使用github的Actions功能自动编译OpenWRT固件
+# 使用github的Actions功能自动编译OpenWRT固件
+
+## 仓库功能介绍
+### 1.多脚本自定义编译
+#### -[创建路由资源目录](#创建路由资源目录)
