@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/02/06 00:11:27  #
+#  update for 2022/02/06 22:23:02  #
 ####################################
 name: 编译固件_immortalwrt
 
@@ -10,6 +10,21 @@ on:
       resource_directory:
         type: choice
         description: '路由器资源目录'
+        options:
+          - "XIAOMI-4A_100M"
+          - "XIAOMI-4A_GIGABit"
+      repo_branch:
+        type: choice
+        description: '版本分支'
+        options:
+          - "master"
+          - "openwrt-18.06"
+          - "openwrt-18.06-dev"
+          - "openwrt-18.06-k5.4"
+          - "openwrt-21.02"
+      feeds_file:
+        type: choice
+        description: '替换软件源配置(feeds.conf.default)'
         options:
           - "XIAOMI-4A_100M"
           - "XIAOMI-4A_GIGABit"
