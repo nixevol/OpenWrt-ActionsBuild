@@ -13,7 +13,7 @@
 - - [GIT_UEMAIL](#GIT_UEMAIL)
 - [创建可更新的yml脚本](#创建可更新的yml脚本)
 - [更改自动更新时间](#更改自动更新时间)
-- [关于 UpdateActionsData.sh 脚本](#关于 UpdateActionsData.sh 脚本)
+- [关于 UpdateActionsData.sh 脚本](#关于UpdateActionsData.sh脚本)
 
 ## 详细内容
 
@@ -109,3 +109,52 @@
 并配置[GIT_TOKEN](#GIT_TOKEN)
 
 注意，发布release必须配置[GIT_TOKEN](#GIT_TOKEN)，否则无法发布
+
+
+### 创建仓库环境变量
+
+**项目中按照 Setting--Secrets--New repository 添加仓库变量**
+
+![image](https://user-images.githubusercontent.com/35430449/152686939-f1275364-a61d-41ab-a9ad-ed38740c999d.png)
+
+**仓库变量一共三个，分别为 [GIT_TOKEN](#GIT_TOKEN) , [GIT_UNAME](#GIT_UNAME) , [GIT_UEMAIL](#GIT_UEMAIL)**
+
+
+
+### GIT_TOKEN
+
+**此变量需要在帐号设置中新建**
+
+**步骤：点击用户头像->Settings->Developer settings->Personal access tokens->Generate new token **
+![image](https://user-images.githubusercontent.com/35430449/152687345-71e35f24-82af-4ed6-9fa7-752db5d5881a.png)
+
+![image](https://user-images.githubusercontent.com/35430449/152687386-0119ff60-fd78-40db-afb9-ddc75758ef8e.png)
+
+**注意：Token的过期时间建议设置为无限期，权限需要三个，分别为 repo workflows user  如图所示**
+
+![image](https://user-images.githubusercontent.com/35430449/152687557-bb67794c-fc94-475e-8ed9-83b1843de0af.png)
+
+
+**然后点击**![image](https://user-images.githubusercontent.com/35430449/152687624-4f1def65-d4af-4fdc-9386-915c24281cb8.png)
+
+**将创建后的Token复制到仓库变量中的 GIT_TOKEN 里面并保存**
+![image](https://user-images.githubusercontent.com/35430449/152687712-f93ab33d-88b6-4c72-a85d-b412940b7bf7.png)
+
+![image](https://user-images.githubusercontent.com/35430449/152687766-552db652-7a6e-4790-a74f-b7f9c9ba93a1.png)
+
+### GIT_UNAME
+
+**此变量为您的GITHUB帐号名称，可在点击头像后查看**
+
+例如我的:
+
+![image](https://user-images.githubusercontent.com/35430449/152687976-d2f5a53a-91c9-4731-8532-2d5bd225cc7a.png)
+
+
+### GIT_EMAIL
+
+**此变量为您GITHUB帐号的注册邮箱**
+
+**[点击此处查看](https://github.com/settings/emails)**
+
+![image](https://user-images.githubusercontent.com/35430449/152688142-6bdd4b7f-dd63-47de-94ef-e1fe3ef20702.png)
