@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/02/06 00:10:57  #
+#  update for 2022/02/06 21:57:35  #
 ####################################
 
 name: 编译固件_自定义仓库
@@ -11,6 +11,18 @@ on:
       resource_directory:
         type: choice
         description: '路由器资源目录'
+        options:
+          - "XIAOMI-4A_100M"
+          - "XIAOMI-4A_GIGABit"
+      repo_url:
+        description: '仓库地址'
+        default: 'https://github.com/openwrt/openwrt'
+      repo_branch:
+        description: '版本分支'
+        default: 'v21.02.1'
+      feeds_file:
+        type: choice
+        description: '替换软件源配置(feeds.conf.default)'
         options:
           - "XIAOMI-4A_100M"
           - "XIAOMI-4A_GIGABit"
