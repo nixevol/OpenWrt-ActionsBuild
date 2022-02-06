@@ -32,6 +32,9 @@
 
 **路由资源目录内存放指定路由的配置方案，其配置文件说明如下**
 
+**注意：新建资源目录后需要在Actions中执行 手动更新Actions ，否则无法在固件编译是选择此资源目录**
+**-   Actions中执行 手动更新Actions 等操作需要先[创建仓库环境变量](#创建仓库环境变量) **
+
 1. **.config**(必须) 
   
   此文件为定制路由及其插件的配置文件，必须存在路由资源目录内，可修改不同名称，但必须在Actions执行编译时一并修改。
@@ -115,9 +118,9 @@
 
 **项目中按照 Setting--Secrets--New repository 添加仓库变量**
 
-![image](https://user-images.githubusercontent.com/35430449/152686939-f1275364-a61d-41ab-a9ad-ed38740c999d.png)
-
 **仓库变量一共三个，分别为 [GIT_TOKEN](#GIT_TOKEN) , [GIT_UNAME](#GIT_UNAME) , [GIT_UEMAIL](#GIT_UEMAIL)**
+
+![image](https://user-images.githubusercontent.com/35430449/152686939-f1275364-a61d-41ab-a9ad-ed38740c999d.png)
 
 
 
@@ -158,3 +161,5 @@
 **[点击此处查看](https://github.com/settings/emails)**
 
 ![image](https://user-images.githubusercontent.com/35430449/152688142-6bdd4b7f-dd63-47de-94ef-e1fe3ef20702.png)
+
+
