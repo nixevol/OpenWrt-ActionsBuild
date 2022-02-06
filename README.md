@@ -30,3 +30,5 @@
   
 ### 路由资源目录各文件作用
 
+1. .config(必须) 此文件为定制路由及其插件的配置文件，必须存在路由资源目录内，可修改不同名称，但必须在Actions执行编译时，一并修改
+   例如：.config文件名为 openwrt.config ,则Actions编译时 config 文件名称 项 也要修改，![image](https://user-images.githubusercontent.com/35430449/152682115-ded3d6d2-f08c-4f82-aefc-e320d191a0dd.png)
