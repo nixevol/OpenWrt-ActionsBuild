@@ -95,4 +95,7 @@
 
 3.**点击 Run workflows 按钮并配置参数**
 
+![image](https://user-images.githubusercontent.com/35430449/152686091-001fb586-8f92-4cfa-914f-82984bf6cfed.png)
 
+**指定OpenWRT源仓库的脚本可以下拉选择拉取的分支，分支列表在 [创建仓库环境变量](#创建仓库环境变量) 后将会每天自动更新或者自行进行手动更新后更新列表**
+![image](https://user-images.githubusercontent.com/35430449/152686363-59ee75eb-35d4-4662-87a0-600b9cb502e4.png)
