@@ -13,6 +13,9 @@
 - - [GIT_UEMAIL](#GIT_UEMAIL)
 - [创建可更新的yml脚本](#创建可更新的yml脚本)
 - [更改自动更新时间](#更改自动更新时间)
-- [关于 UpdateActionsData.sh 脚本]
+- [关于 UpdateActionsData.sh 脚本](#关于 UpdateActionsData.sh 脚本)
 
-### [捐赠](#捐赠)
+## 详细内容
+
+### 创建路由资源目录
+
