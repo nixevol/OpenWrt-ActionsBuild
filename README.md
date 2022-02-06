@@ -179,5 +179,27 @@
 
 ### 更改自动更新时间
  **仓库默认每天凌晨0点(北京时间)自动更新**
+ 
  编辑.github/workflows目录下的 **update_auto.yml** 文件
  
+ 修改 
+ 
+       - cron: '0 16 * * *'
+       
+ 这一段代码即可
+
+![image](https://user-images.githubusercontent.com/35430449/152690539-0f5a98b3-f791-4ae8-bde5-84532c36829f.png)
+
+### 关于UpdateActionsData.sh脚本
+
+  **此脚本为更新yml文件的脚本代码，如果没有特殊需要，一般无需修改**
+  
+## 捐赠
+
+微信：
+
+![image](https://user-images.githubusercontent.com/35430449/152690757-9e680080-07a6-41fd-9d5a-302652811b1d.png)
+
+支付宝：
+
+![image](https://user-images.githubusercontent.com/35430449/152690751-6e06c20a-5ac5-4736-a7e0-d3b13258b316.png)
