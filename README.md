@@ -89,30 +89,30 @@
   
 ### 如何编译OpenWRT固件
 
-1.**点击拉取后仓库上方的Actions按钮**
+ 1.**点击拉取后仓库上方的Actions按钮**
 
-![image](https://user-images.githubusercontent.com/35430449/152683646-f7b9a05d-9faf-41ef-98d0-2e934984a8ba.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152683646-f7b9a05d-9faf-41ef-98d0-2e934984a8ba.png)
 
-2.**选择需要编译的源码来源或者自定义源码来源**
+ 2.**选择需要编译的源码来源或者自定义源码来源**
 
-![image](https://user-images.githubusercontent.com/35430449/152683856-75512be0-02da-465a-9aba-9d56e9ff5b68.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152683856-75512be0-02da-465a-9aba-9d56e9ff5b68.png)
 
-3.**点击 Run workflows 按钮并配置参数**
+ 3.**点击 Run workflows 按钮并配置参数**
 
-![image](https://user-images.githubusercontent.com/35430449/152686091-001fb586-8f92-4cfa-914f-82984bf6cfed.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152686091-001fb586-8f92-4cfa-914f-82984bf6cfed.png)
 
-**指定OpenWRT源仓库的脚本可以下拉选择拉取的分支，分支列表在 [创建仓库环境变量](#创建仓库环境变量) 后将会每天自动更新或者自行进行手动更新后更新列表**
+ **指定OpenWRT源仓库的脚本可以下拉选择拉取的分支，分支列表在 [创建仓库环境变量](#创建仓库环境变量) 后将会每天自动更新或者自行进行手动更新后更新列表**
 
-![image](https://user-images.githubusercontent.com/35430449/152686363-59ee75eb-35d4-4662-87a0-600b9cb502e4.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152686363-59ee75eb-35d4-4662-87a0-600b9cb502e4.png)
 
-**针对自定义脚本则需要自行输入OpenWRT源仓库链接与分支名称**
+ **针对自定义脚本则需要自行输入OpenWRT源仓库链接与分支名称**
 
-4.**点击![image](https://user-images.githubusercontent.com/35430449/152686504-069f766c-b7b5-4c4c-a3f8-ca00f4c3997c.png)即可自动编译**
+ 4.**点击![image](https://user-images.githubusercontent.com/35430449/152686504-069f766c-b7b5-4c4c-a3f8-ca00f4c3997c.png)即可自动编译**
 
-编译完成后可在任务内查看或下载结果，如需发布到release，请在配置参数是将 发布到release 设置为 true ![image](https://user-images.githubusercontent.com/35430449/152686705-554634b2-9484-4985-88b7-9d53994e716c.png)
-并配置[GIT_TOKEN](#GIT_TOKEN)
+ 编译完成后可在任务内查看或下载结果，如需发布到release，请在配置参数是将 发布到release 设置为 true ![image](https://user-images.githubusercontent.com/35430449/152686705-554634b2-9484-4985-88b7-9d53994e716c.png)
+ 并配置[GIT_TOKEN](#GIT_TOKEN)
 
-注意，发布release必须配置[GIT_TOKEN](#GIT_TOKEN)，否则无法发布
+ 注意，发布release必须配置[GIT_TOKEN](#GIT_TOKEN)，否则无法发布
 
 
 ### 创建仓库环境变量
@@ -150,27 +150,34 @@
 
 **此变量为您的GITHUB帐号名称，可在点击头像后查看**
 
-例如:
+ 例如:
 
-![image](https://user-images.githubusercontent.com/35430449/152687976-d2f5a53a-91c9-4731-8532-2d5bd225cc7a.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152687976-d2f5a53a-91c9-4731-8532-2d5bd225cc7a.png)
 
 
 ### GIT_UEMAIL
 
 **此变量为您GITHUB帐号的注册邮箱**
 
-**[点击此处查看](https://github.com/settings/emails)**
+ **[点击此处查看](https://github.com/settings/emails)**
 
-![image](https://user-images.githubusercontent.com/35430449/152688142-6bdd4b7f-dd63-47de-94ef-e1fe3ef20702.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152688142-6bdd4b7f-dd63-47de-94ef-e1fe3ef20702.png)
 
 
 
 ### 创建可更新的yml脚本
 
-1. 进入.github/workflows目录下新建一个yml脚本，并从其他buildOpenWRT_xxx.yml 中复制代码进去（注意：请不要使用 **buildOpenWRT_custom.yml** 的代码）
+ 1. 进入.github/workflows目录下新建一个yml脚本，并从其他buildOpenWRT_xxx.yml 中复制代码进去
+  （注意：请不要使用 **buildOpenWRT_custom.yml** 的代码）
 
-2. 将新建脚本内的 REPO_URL: 值更换为您需要自动更新分支列表的仓库链接，保存文件后再从 **Actions** 内执行 **手动更新Actions** 操作
+ 2. 将新建脚本内的 REPO_URL: 值更换为您需要自动更新分支列表的仓库链接，保存文件后再从 **Actions** 内执行 **手动更新Actions** 操作
 
   例如：REPO_URL: https://github.com/coolsnowwolf/lede
 
-![image](https://user-images.githubusercontent.com/35430449/152689320-83ca9cf0-4c30-4404-8fb9-271117dd41b3.png)
+ ![image](https://user-images.githubusercontent.com/35430449/152689320-83ca9cf0-4c30-4404-8fb9-271117dd41b3.png)
+
+
+### 更改自动更新时间
+ **仓库默认每天凌晨0点(北京时间)自动更新**
+ 编辑.github/workflows目录下的 **update_auto.yml** 文件
+ 
