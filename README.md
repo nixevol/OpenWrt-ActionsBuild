@@ -11,7 +11,7 @@
  
 ## 如需二次发布请注明我的 GitHub 仓库链接
 
-## （https://github.com/nixevol/OpenWrt-ActionsBuild）
+## (https://github.com/nixevol/OpenWrt-ActionsBuild)
 
 ## 谢谢合作！
 
