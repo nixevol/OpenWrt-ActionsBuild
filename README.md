@@ -98,4 +98,14 @@
 ![image](https://user-images.githubusercontent.com/35430449/152686091-001fb586-8f92-4cfa-914f-82984bf6cfed.png)
 
 **指定OpenWRT源仓库的脚本可以下拉选择拉取的分支，分支列表在 [创建仓库环境变量](#创建仓库环境变量) 后将会每天自动更新或者自行进行手动更新后更新列表**
+
 ![image](https://user-images.githubusercontent.com/35430449/152686363-59ee75eb-35d4-4662-87a0-600b9cb502e4.png)
+
+**针对自定义脚本则需要自行输入OpenWRT源仓库链接与分支名称**
+
+4.**点击![image](https://user-images.githubusercontent.com/35430449/152686504-069f766c-b7b5-4c4c-a3f8-ca00f4c3997c.png)即可自动编译**
+
+编译完成后可在任务内查看或下载结果，如需发布到release，请在配置参数是将 发布到release 设置为 true ![image](https://user-images.githubusercontent.com/35430449/152686705-554634b2-9484-4985-88b7-9d53994e716c.png)
+并配置[GIT_TOKEN](#GIT_TOKEN)
+
+注意，发布release必须配置[GIT_TOKEN](#GIT_TOKEN)，否则无法发布
