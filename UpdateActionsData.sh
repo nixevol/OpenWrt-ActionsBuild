@@ -19,6 +19,8 @@ then
   elif [ "${file##*/}" == "buildOpenWRT_custom.yml" ]
   then
     b=`sed -n "/        description: '替换软件源配置(feeds.conf.default)'/{=;}" $file` && head -n ${b} $file > tmp.yml
+    echo "$b"
+    cat tmp.yml
     echo -e "        options:\n$pl" >> tmp.yml
     sed -n '/repo_.*:/,$p' $file >> tmp.yml
     o=`cat tmp.yml | grep "#  update for"`
