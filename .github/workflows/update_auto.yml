@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 16 * * *'
 env:
-  UPDATESH: 'UpdateActionData.sh'
+  UPDATESH: 'UpdateActionsData.sh'
   EXPLAIN: "auto update"
   
 jobs: 
