@@ -6,5 +6,11 @@
 - [路由资源目录各文件作用](#路由资源目录各文件作用)
 - [如何编译OpenWRT固件](#如何编译OpenWRT固件)
 
-### 2.配置 自动/手动 更新Actions功能(.github/workflows/内的yml文件)
+### 2.配置 自动/手动 更新Actions功能(.github/workflows/内的yml脚本)
 - [创建仓库环境变量(必要)](#创建仓库环境变量)
+- - [GIT_TOKEN]
+- - [GIT_UNAME]
+- - [GIT_UEMAIL]
+- [创建可更新的yml脚本](#创建可更新的yml脚本)
+- [更改自动更新时间](#更改自动更新时间)
+- 
