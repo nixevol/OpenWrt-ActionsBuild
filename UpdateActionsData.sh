@@ -18,7 +18,7 @@ then
     echo ""
   elif [ "${file##*/}" == "buildOpenWRT_custom.yml" ]
   then
-    b=`sed -n "/        description: '替换软件源配置(feeds.conf.default)'/{=;}" $file` && head -n ${b} $file > tmp.yml
+    b=`sed -n "/        description: '路由器资源目录'/{=;}" $file` && head -n ${b} $file > tmp.yml
     echo "$b"
     cat tmp.yml
     echo -e "        options:\n$pl" >> tmp.yml
@@ -44,7 +44,7 @@ then
     rm -f uploaddir/.github/workflows/${file##*/}
     cp tmp.yml uploaddir/.github/workflows/${file##*/}
     rm -f tmp.yml
-    b=`sed -n "/        description: '替换软件源配置(feeds.conf.default)'/{=;}" $file` && head -n ${b} $file > tmp.yml
+    b=`sed -n "/        description: '路由器资源目录'/{=;}" $file` && head -n ${b} $file > tmp.yml
     echo -e "        options:\n$pl" >> tmp.yml
     sed -n '/repo_.*:/,$p' $file >> tmp.yml
     o=`cat tmp.yml | grep "#  update for"`
