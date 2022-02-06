@@ -9,7 +9,11 @@
  
  **2.更新工作流脚本里路由资源列表(编译方案)**
  
-## 如需二次发布请注明我的 GitHub 仓库链接（https://github.com/nixevol/OpenWrt-ActionsBuild）。谢谢合作！
+## 如需二次发布请注明我的 GitHub 仓库链接
+
+## （https://github.com/nixevol/OpenWrt-ActionsBuild）。
+
+## 谢谢合作！
 
 ## 仓库说明
 ### 1.多脚本自定义编译
