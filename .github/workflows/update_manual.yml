@@ -11,7 +11,7 @@ on:
         description: '升级记录保留数量'
         default: '3'
 env:
-  UPDATESH: 'UpdateActionData.sh'
+  UPDATESH: 'UpdateActionsData.sh'
   EXPLAIN: "manual update"
   
 jobs: 
