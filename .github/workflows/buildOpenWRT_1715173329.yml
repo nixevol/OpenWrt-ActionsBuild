@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/02/13 00:13:01  #
+#  update for 2022/02/14 00:13:25  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -44,7 +44,6 @@ on:
           - "master-ax3000-old"
           - "master-ax3000-wifioffload"
           - "master-eip93"
-          - "master-r1plts"
           - "openwrt-18.06"
           - "openwrt-18.06-k5.4"
           - "openwrt-18.06-meson"
