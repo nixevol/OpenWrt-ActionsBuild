@@ -129,11 +129,11 @@ jobs:
         [ -e $BEFOR_PATCH ] && echo "::set-output name=befor::success"
         [ -e $AFTER_PATCH ] && echo "::set-output name=after::success"
         echo "配置文件路径"
-        [ -e $FEEDS_FILE ] && echo '$FEEDS_FILE'
-        [ -e $FILES_PATH ] && echo '$FILES_PATH'
-        [ -e $OPENWRT_PATCH ] && echo '$OPENWRT_PATCH'
-        [ -e $BEFOR_PATCH ] && echo '$BEFOR_PATCH'
-        [ -e $AFTER_PATCH ] && echo '$AFTER_PATCH'
+        [ -e $FEEDS_FILE ] && echo $FEEDS_FILE
+        [ -e $FILES_PATH ] && echo $FILES_PATH
+        [ -e $OPENWRT_PATCH ] && echo $OPENWRT_PATCH
+        [ -e $BEFOR_PATCH ] && echo $BEFOR_PATCH
+        [ -e $AFTER_PATCH ] && echo $AFTER_PATCH
     
     - name: 替换软件源配置
       if: env.REPLACE_FEEDS == 'true' && steps.check.outputs.feeds == 'success'
