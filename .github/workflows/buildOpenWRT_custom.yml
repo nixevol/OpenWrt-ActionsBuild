@@ -155,6 +155,7 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         cat openwrt/.config
         
+        
     - name: 执行编译前脚本
       if: env.RUN_BEFORPATCH == 'true' && steps.check.outputs.befor == 'success'
       run: |
