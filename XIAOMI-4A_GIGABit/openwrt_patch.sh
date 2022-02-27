@@ -1,5 +1,11 @@
 #!/bin/bash
-#patch
+
+#修复报错
+cp /usr/bin/upx ./staging_dir/host/bin/
+cp /usr/bin/upx-ucl ./staging_dir/host/bin/
+
+
+#小米4A千兆版 DTS修改方案
 cat >> ./target/linux/ramips/dts/mt7621_xiaomi_mi-router-4a-gigabit.dtsi << EOF
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 
