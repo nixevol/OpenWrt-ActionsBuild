@@ -155,7 +155,8 @@ jobs:
     - name: 更新并安装软件源
       run: |
         cd openwrt 
-        ./scripts/feeds update -a && ./scripts/feeds install -a
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
         ./scripts/feeds update -a && ./scripts/feeds install -a
         
     - name: 加载固件配置
