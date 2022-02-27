@@ -161,8 +161,6 @@ jobs:
         [ -e $FEEDS_FILE ] && rm -f openwrt/feeds.conf.default
         [ -e $FEEDS_FILE ] && mv $FEEDS_FILE openwrt/feeds.conf.default
     
-    - name: 加载固件配置
-      run: mv $CONFIG_FILE openwrt/.config
       
     - name: 导入补丁目录
       if: env.LOAD_FILES == 'true' && steps.check.outputs.files == 'success'
@@ -180,7 +178,12 @@ jobs:
         cd openwrt 
         ./scripts/feeds update -a && ./scripts/feeds install -a
         ./scripts/feeds update -a && ./scripts/feeds install -a
-    
+        
+    - name: 加载固件配置
+      run: |
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        cat openwrt/.config
+        
     - name: 执行编译前脚本
       if: env.RUN_BEFORPATCH == 'true' && steps.check.outputs.befor == 'success'
       run: |
