@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#修复报错
+#报错修复
 cp /usr/bin/upx /workdir/openwrt/staging_dir/host/bin/
 cp /usr/bin/upx-ucl /workdir/openwrt/staging_dir/host/bin/
 
