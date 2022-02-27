@@ -149,18 +149,20 @@ jobs:
         cd openwrt 
         ./scripts/feeds update -a && ./scripts/feeds install -a
         ./scripts/feeds update -a && ./scripts/feeds install -a
-    
+        
+        
+    - name: 加载固件配置
+      run: |
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        cat openwrt/.config
+        
+        
     - name: 执行编译前脚本
       if: env.RUN_BEFORPATCH == 'true' && steps.check.outputs.befor == 'success'
       run: |
         chmod +x $BEFOR_PATCH
         cd openwrt
         $GITHUB_WORKSPACE/$BEFOR_PATCH
-        
-    - name: 加载固件配置
-      run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        cat openwrt/.config
         
     - name: 下载编译所需
       id: makedownload
