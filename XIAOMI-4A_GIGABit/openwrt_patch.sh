@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #修复报错
-cp /usr/bin/upx ./staging_dir/host/bin/
-cp /usr/bin/upx-ucl ./staging_dir/host/bin/
+cp /usr/bin/upx /workdir/openwrt/staging_dir/host/bin/
+cp /usr/bin/upx-ucl /workdir/openwrt/staging_dir/host/bin/
 
 
 #小米4A千兆版 DTS修改方案
