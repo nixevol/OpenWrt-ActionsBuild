@@ -2,7 +2,7 @@
 #  update for 2022/03/02 00:15:29  #
 ####################################
 
-name: 编译固件_lean
+name: 编译固件_lede
 
 on: 
   repository_dispatch:
@@ -27,7 +27,7 @@ on:
         - "false"
       config_file:
         description: 'config 文件名称(.config)'
-        default: '.config'
+        default: 'lede.config'
       files_path:
         type: choice
         description: '导入补丁目录(files目录)'
