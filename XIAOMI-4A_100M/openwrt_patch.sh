@@ -103,26 +103,27 @@ cat >> target/linux/ramips/dts/mt7628an_xiaomi_mir4a-100m.dts << EOF
 	};
 };
 
-&state_default {
-	gpio {
-		ralink,group = "gpio", "wdt", "wled_an";
-		ralink,function = "gpio";
-	};
-};
-
 &ethernet {
-	mtd-mac-address = <&factory 0x4>;
-	mtd-mac-address-increment = <(-1)>;
+	nvmem-cells = <&macaddr_factory_4>;
+	nvmem-cell-names = "mac-address";
+	mac-address-increment = <(-1)>;
 };
 
 &esw {
-	mediatek,portmap = <0x2f>;
+	mediatek,portmap = <0x3e>;
 	mediatek,portdisable = <0x2a>;
 };
 
-&wmac {
-	status = "okay";
+&factory {
+	compatible = "nvmem-cells";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	macaddr_factory_4: macaddr@4 {
+		reg = <0x4 0x6>;
+	};
 };
+
 
 EOF
 
