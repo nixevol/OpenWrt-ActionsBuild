@@ -143,4 +143,7 @@ EOF
 sed -i 's/#include "mt7621_xiaomi_mi-router-4a-3g-v2.dtsi"/#include "mt7621_xiaomi_mi-router-4a-gigabit.dtsi"/g' ./target/linux/ramips/dts/mt7621_xiaomi_mi-router-4a-gigabit.dts
 sed -i '/define Device\/xiaomi_mi-router-4a-gigabit/{:a;n;s/IMAGE_SIZE := 14848k/IMAGE_SIZE := 16064k/g;/TARGET_DEVICES += xiaomi_mi-router-4a-gigabit/!ba}' ./target/linux/ramips/image/mt7621.mk
 
+sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
+sed -i '$a src-git custom https://github.com/kiddin9/openwrt-packages' feeds.conf.default
 
