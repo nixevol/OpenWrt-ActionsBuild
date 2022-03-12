@@ -22,14 +22,3 @@ git clone https://github.com/garypang13/luci-theme-edge.git package/lean/luci-th
 
 
 sed -i "s/OpenWrt /NIXEVOL build $(TZ=UTC-8 date "+%Y.%m.%d")@ OpenWrt /g" package/lean/default-settings/files/zzz-default-settings
-
-
-[ -z$(grep "CONFIG_KERNEL_BUILD_USER=".config)] &&
-    echo'CONFIG_KERNEL_BUILD_USER="NIXEVOL"'>>.config ||
-    sed -i 's@\(CONFIG_KERNEL_BUILD_USER=\).*@\1$"NIXEVOL"@'.config
-
-
-[ -z$(grep "CONFIG_KERNEL_BUILD_DOMAIN=".config)] &&
-    echo'CONFIG_KERNEL_BUILD_DOMAIN="GitHub Actions"'>>.config ||
-    sed -i 's@\(CONFIG_KERNEL_BUILD_DOMAIN=\).*@\1$"GitHub Actions"@'.config
-
