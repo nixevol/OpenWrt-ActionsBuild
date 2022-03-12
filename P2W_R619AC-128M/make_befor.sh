@@ -22,3 +22,4 @@ git clone https://github.com/garypang13/luci-theme-edge.git package/lean/luci-th
 
 
 sed -i "s/OpenWrt /NIXEVOL build $(TZ=UTC-8 date "+%Y.%m.%d")@ OpenWrt /g" package/lean/default-settings/files/zzz-default-settings
+
