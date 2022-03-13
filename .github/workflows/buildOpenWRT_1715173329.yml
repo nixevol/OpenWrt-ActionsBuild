@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/03/13 00:13:51  #
+#  update for 2022/03/14 00:14:51  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -42,9 +42,9 @@ on:
           - "dpdk"
           - "lede-17.01"
           - "master-ax3000"
+          - "master-ax3000-5.15"
           - "master-ax3000-old"
           - "master-ax3000-wifioffload"
-          - "master-eip93"
           - "openwrt-18.06"
           - "openwrt-18.06-k5.4"
           - "openwrt-18.06-meson"
