@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/03/16 00:15:42  #
+#  update for 2022/03/17 00:14:44  #
 ####################################
 name: 编译固件_immortalwrt
 
@@ -20,7 +20,6 @@ on:
         options:
           - "master"
           - "openwrt-18.06"
-          - "openwrt-18.06-dev"
           - "openwrt-18.06-k5.4"
           - "openwrt-21.02"
       feeds_file:
