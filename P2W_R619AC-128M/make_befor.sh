@@ -13,7 +13,7 @@ ls
 sed -i 's/OpenWrt/R619ac/g' package/base-files/files/bin/config_generate
 
 #修改后台IP
-sed -i 's/192.168.1.1/192.168.123.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.32.1/g' package/base-files/files/bin/config_generate
 #修改主题
  rm -rf package/lean/luci-theme-argon
 
