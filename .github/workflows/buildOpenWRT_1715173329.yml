@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/04/22 00:16:28  #
+#  update for 2022/04/23 00:16:30  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -44,6 +44,7 @@ on:
           - "master-ax3000-5.15"
           - "master-ax3000-old"
           - "master-ax3000-wifioffload"
+          - "master-fw4-nat1"
           - "openwrt-18.06-meson"
           - "openwrt-21.02"
           - "qca8k"
