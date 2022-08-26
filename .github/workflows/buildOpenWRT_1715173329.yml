@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/08/26 00:15:45  #
+#  update for 2022/08/27 00:16:37  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -47,7 +47,9 @@ on:
           - "master-ax3000-5.15-wifioffload"
           - "master-ax3000-old"
           - "master-ax3000-wifioffload"
+          - "master-rockchip-515-rk3568"
           - "master-rockchip-519"
+          - "my/master-rockchip-515-rk3568"
           - "openwrt-18.06-meson"
           - "openwrt-21.02"
           - "qca8k"
