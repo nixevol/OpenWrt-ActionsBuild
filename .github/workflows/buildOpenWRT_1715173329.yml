@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/10/20 00:25:44  #
+#  update for 2022/10/21 00:24:38  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -43,13 +43,16 @@ on:
           - "2102-mac80211-515"
           - "2102-nvmem-bp"
           - "dpdk"
+          - "master-autocore"
           - "master-ax3000"
           - "master-ax3000-5.15"
+          - "master-ax3000-5.15-nss"
           - "master-ax3000-5.15-wifioffload"
           - "master-ax3000-old"
           - "master-ax3000-wifioffload"
           - "master-rockchip-515-rk3568"
           - "master-rockchip-519"
+          - "master-rockchip-uboot"
           - "openwrt-18.06-meson"
           - "openwrt-21.02"
           - "qca8k"
