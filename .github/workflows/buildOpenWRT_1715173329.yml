@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/12/09 00:14:25  #
+#  update for 2022/12/10 00:14:03  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -56,6 +56,7 @@ on:
           - "master-rockchip-519"
           - "master-rockchip-6.1"
           - "master-rockchip-fit"
+          - "master-rockchip-r1plts"
           - "master-rockchip-rk3588"
           - "master-rockchip-uboot"
           - "openwrt-18.06-meson"
