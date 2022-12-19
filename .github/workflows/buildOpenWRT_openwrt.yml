@@ -1,5 +1,5 @@
 ####################################
-#  update for 2022/12/19 00:13:46  #
+#  update for 2022/12/20 00:16:45  #
 ####################################
 name: 编译固件_openwrt
 
@@ -24,7 +24,6 @@ on:
           - "openwrt-19.07"
           - "openwrt-21.02"
           - "openwrt-22.03"
-          - "tools-sed"
       feeds_file:
         type: choice
         description: '替换软件源配置(feeds.conf.default)'
