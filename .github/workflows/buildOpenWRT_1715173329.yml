@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/01/19 00:13:55  #
+#  update for 2023/01/20 00:14:06  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -18,10 +18,8 @@ on:
         type: choice
         description: '版本分支'
         options:
-          - "1806-glibc"
           - "1806-ipq806x-nss"
           - "1806-k44"
-          - "1806-k54-510"
           - "1806-k54-ipq40xx-hnat"
           - "1806-k54-k510"
           - "1806-k54-k511"
@@ -29,22 +27,16 @@ on:
           - "1806-k54-mediatek"
           - "1806-k54-nanopi-m4v2"
           - "1806-k54-nanopi-neo3"
-          - "1806-k54-ntfs3"
           - "1806-k54-r2s-oc"
-          - "1806-k54-rk3328-dmc"
           - "1806-k54-rk3328-usb3"
           - "1806-k54-uksm"
           - "1806-ramips-419"
           - "1806-rockchip-419"
-          - "1806-turboacc-natflow"
           - "1806-ubus"
           - "1907-ipq806x-nss"
           - "1907-ossl"
-          - "2102-bcm53xx-dsa"
-          - "2102-mac80211-515"
           - "2102-nvmem-bp"
-          - "dpdk"
-          - "master-autocore"
+          - "master"
           - "master-ax3000"
           - "master-ax3000-5.15"
           - "master-ax3000-5.15-nss"
@@ -53,20 +45,13 @@ on:
           - "master-ax3000-wifioffload"
           - "master-ipq807x-5.15"
           - "master-ipq807x-6.1"
+          - "master-ipq807x-mf269"
           - "master-ipq807x-stock"
-          - "master-r68s"
-          - "master-rockchip-515-rk3568"
           - "master-rockchip-519"
           - "master-rockchip-6.1"
-          - "master-rockchip-fit"
-          - "master-rockchip-motorcomm"
-          - "master-rockchip-r1p"
           - "master-rockchip-r1plts"
           - "master-rockchip-rk3588"
           - "master-rockchip-uboot"
-          - "openwrt-18.06-meson"
-          - "openwrt-21.02"
-          - "qca8k"
       feeds_file:
         type: choice
         description: '替换软件源配置(feeds.conf.default)'
