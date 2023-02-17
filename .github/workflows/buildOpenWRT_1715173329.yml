@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/02/17 00:14:26  #
+#  update for 2023/02/18 00:13:52  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -51,8 +51,6 @@ on:
           - "master-rockchip-6.1"
           - "master-rockchip-motorcomm"
           - "master-rockchip-r1plts"
-          - "master-rockchip-r5s"
-          - "master-rockchip-r68s"
           - "master-rockchip-rk3588"
           - "master-rockchip-uboot"
       feeds_file:
