@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/02/19 00:12:57  #
+#  update for 2023/02/20 00:13:02  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -36,6 +36,7 @@ on:
           - "1907-ipq806x-nss"
           - "1907-ossl"
           - "2102-nvmem-bp"
+          - "2102-ramips-mt76"
           - "master"
           - "master-ax3000"
           - "master-ax3000-5.15"
@@ -46,6 +47,7 @@ on:
           - "master-ipq807x-5.15"
           - "master-ipq807x-5.15-nss"
           - "master-ipq807x-6.1"
+          - "master-ipq807x-nss"
           - "master-ipq807x-stock"
           - "master-rockchip-519"
           - "master-rockchip-6.1"
