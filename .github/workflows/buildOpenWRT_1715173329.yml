@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/04/20 00:12:55  #
+#  update for 2023/04/21 00:12:27  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -46,6 +46,7 @@ on:
           - "master-ax3000-5.15-wifioffload"
           - "master-ax3000-old"
           - "master-ax3000-wifioffload"
+          - "master-bcmiproc"
           - "master-ipq807x-5.15"
           - "master-ipq807x-5.15-nss"
           - "master-ipq807x-6.1"
