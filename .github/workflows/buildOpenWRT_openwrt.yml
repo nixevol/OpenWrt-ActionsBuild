@@ -127,11 +127,11 @@ jobs:
     - name: 检查文件状态
       id: check
       run: |
-        [ -e $FEEDS_FILE ] && echo "::set-output name=feeds::success"
-        [ -e $FILES_PATH ] && echo "::set-output name=files::success"
-        [ -e $OPENWRT_PATCH ] && echo "::set-output name=patch::success"
-        [ -e $BEFOR_PATCH ] && echo "::set-output name=befor::success"
-        [ -e $AFTER_PATCH ] && echo "::set-output name=after::success"
+        [ -e $FEEDS_FILE ] && echo "feeds::success"
+        [ -e $FILES_PATH ] && echo "files::success"
+        [ -e $OPENWRT_PATCH ] && echo "patch::success"
+        [ -e $BEFOR_PATCH ] && echo "befor::success"
+        [ -e $AFTER_PATCH ] && echo "after::success"
         echo "配置文件路径"
         [ -e $FEEDS_FILE ] && echo $FEEDS_FILE
         [ -e $FILES_PATH ] && echo $FILES_PATH
