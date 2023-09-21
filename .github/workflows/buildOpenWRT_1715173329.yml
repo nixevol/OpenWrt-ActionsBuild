@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/09/21 00:12:12  #
+#  update for 2023/09/22 00:11:39  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -36,6 +36,7 @@ on:
           - "1907-ipq806x-nss"
           - "1907-ossl"
           - "2102-autocore"
+          - "2102-mediatek-cmcca10"
           - "2102-mt76-rollback"
           - "2102-mt798x-zr3020"
           - "2102-nvmem-bp"
@@ -54,6 +55,7 @@ on:
           - "master-ipq807x-6.1"
           - "master-ipq807x-nss"
           - "master-ipq807x-stock"
+          - "master-mediatek-cmcca10"
           - "master-mt7981-t7"
           - "master-rockchip-519"
           - "master-rockchip-6.1"
