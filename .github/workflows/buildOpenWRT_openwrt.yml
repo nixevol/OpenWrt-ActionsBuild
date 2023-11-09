@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/11/09 00:14:32  #
+#  update for 2023/11/10 00:13:44  #
 ####################################
 name: 编译固件_openwrt
 
@@ -26,6 +26,7 @@ on:
           - "openwrt-21.02"
           - "openwrt-22.03"
           - "openwrt-23.05"
+          - "owrt-23.05-ax880"
       feeds_file:
         type: choice
         description: '替换软件源配置(feeds.conf.default)'
