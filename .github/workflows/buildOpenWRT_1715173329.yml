@@ -1,5 +1,5 @@
 ####################################
-#  update for 2023/12/18 00:11:24  #
+#  update for 2023/12/19 00:13:48  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -60,6 +60,7 @@ on:
           - "master-rockchip-r1plts"
           - "master-rockchip-rk3588-rkuboot"
           - "master-rockchip-uboot"
+          - "master-sunxi-zero3"
       feeds_file:
         type: choice
         description: '替换软件源配置(feeds.conf.default)'
