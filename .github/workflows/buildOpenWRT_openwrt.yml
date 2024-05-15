@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/05/15 00:14:05  #
+#  update for 2024/05/16 00:14:23  #
 ####################################
 name: 编译固件_openwrt
 
@@ -18,7 +18,6 @@ on:
         type: choice
         description: '版本分支'
         options:
-          - "apk-rebase"
           - "lede-17.01"
           - "main"
           - "master"
