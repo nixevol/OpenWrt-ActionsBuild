@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/09/26 00:17:19  #
+#  update for 2024/09/27 00:16:25  #
 ####################################
 name: 编译固件_openwrt
 
@@ -18,7 +18,6 @@ on:
         type: choice
         description: '版本分支'
         options:
-          - "dgs-1210-28p-luizluca"
           - "lede-17.01"
           - "main"
           - "master"
