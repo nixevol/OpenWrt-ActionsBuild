@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/10/21 00:13:45  #
+#  update for 2024/10/22 00:15:03  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -61,6 +61,7 @@ on:
           - "master-rockchip-adc"
           - "master-rockchip-mdio"
           - "master-rockchip-r1plts"
+          - "master-rockchip-r3s"
           - "master-rockchip-rk3588-display"
           - "master-rockchip-rk3588-rkuboot"
           - "master-rockchip-scmi"
