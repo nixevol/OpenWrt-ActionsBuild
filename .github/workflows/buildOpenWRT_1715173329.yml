@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/10/24 00:15:31  #
+#  update for 2024/10/25 00:14:24  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -58,6 +58,7 @@ on:
           - "master-mediatek-rax3000m"
           - "master-r8125"
           - "master-rockchip-519"
+          - "master-rockchip-a2402"
           - "master-rockchip-adc"
           - "master-rockchip-mdio"
           - "master-rockchip-r1plts"
