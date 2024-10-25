@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/10/25 00:14:24  #
+#  update for 2024/10/26 00:15:18  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -40,6 +40,7 @@ on:
           - "2102-nvmem-bp"
           - "2102-ramips-mt76"
           - "2102-rtw88"
+          - "2305-rockchip-a2402"
           - "master"
           - "master-aic8800"
           - "master-ax3000"
@@ -55,11 +56,9 @@ on:
           - "master-ipq807x-6.1"
           - "master-ipq807x-nss"
           - "master-ipq807x-stock"
-          - "master-mediatek-rax3000m"
           - "master-r8125"
           - "master-rockchip-519"
           - "master-rockchip-a2402"
-          - "master-rockchip-adc"
           - "master-rockchip-mdio"
           - "master-rockchip-r1plts"
           - "master-rockchip-r3s"
@@ -67,7 +66,6 @@ on:
           - "master-rockchip-rk3588-rkuboot"
           - "master-rockchip-scmi"
           - "master-rockchip-sv901"
-          - "master-rockchip-uboot"
           - "master-sunxi-zero3"
       feeds_file:
         type: choice
