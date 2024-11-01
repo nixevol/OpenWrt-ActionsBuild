@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/11/01 00:16:14  #
+#  update for 2024/11/02 00:15:26  #
 ####################################
 name: 编译固件_immortalwrt
 
@@ -23,6 +23,7 @@ on:
           - "openwrt-18.06-k5.4"
           - "openwrt-21.02"
           - "openwrt-23.05"
+          - "openwrt-24.10"
       feeds_file:
         type: choice
         description: '替换软件源配置(feeds.conf.default)'
