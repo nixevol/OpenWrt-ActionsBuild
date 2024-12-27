@@ -1,5 +1,5 @@
 ####################################
-#  update for 2024/12/27 00:15:49  #
+#  update for 2024/12/28 00:15:27  #
 ####################################
 name: 编译固件_openwrt
 
@@ -27,6 +27,7 @@ on:
           - "openwrt-22.03"
           - "openwrt-23.05"
           - "openwrt-24.10"
+          - "realtek/rtl8231-mfd"
       feeds_file:
         type: choice
         description: '替换软件源配置(feeds.conf.default)'
