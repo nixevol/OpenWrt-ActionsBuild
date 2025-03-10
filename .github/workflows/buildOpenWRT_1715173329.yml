@@ -1,5 +1,5 @@
 ####################################
-#  update for 2025/03/10 00:12:07  #
+#  update for 2025/03/11 00:13:56  #
 ####################################
 name: 编译固件_1715173329-immortalwrt
 
@@ -56,7 +56,6 @@ on:
           - "master-ipq807x-6.1"
           - "master-ipq807x-nss"
           - "master-ipq807x-stock"
-          - "master-mediatek-rax3000me"
           - "master-mediatek-tr3000"
           - "master-r8125"
           - "master-rockchip-519"
